@@ -6,13 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Archives: 2020 | 胡四毛的小BLOG</title>
+  <title>操作系统特性 | 胡四毛的小BLOG</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="胡四毛的小BLOG">
-<meta property="og:url" content="http://example.com/archives/2020/index.html">
+  <meta name="description" content="windows和linux调度windowsWindows操作系统的调度模块采用的是基于优先级的可抢占调度，保证了一定的实时性支持 当一个线程变为就绪态时，或者有线程离开了运行态，再或者线程的优先级和处理器亲和性等发生了改变，都会触发分发器对线程的重新调度。 Windows的‘剥夺式’调度中线程的调度与切换是分离的，新调度线程不会导致切换，否则中断返回现场不对 Windows中进程、线程是层次结构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统特性">
+<meta property="og:url" content="http://example.com/2020/09/16/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%80%BB%E7%BB%93/index.html">
 <meta property="og:site_name" content="胡四毛的小BLOG">
+<meta property="og:description" content="windows和linux调度windowsWindows操作系统的调度模块采用的是基于优先级的可抢占调度，保证了一定的实时性支持 当一个线程变为就绪态时，或者有线程离开了运行态，再或者线程的优先级和处理器亲和性等发生了改变，都会触发分发器对线程的重新调度。 Windows的‘剥夺式’调度中线程的调度与切换是分离的，新调度线程不会导致切换，否则中断返回现场不对 Windows中进程、线程是层次结构">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-09-16T07:33:12.000Z">
+<meta property="article:modified_time" content="2020-09-16T13:27:24.143Z">
 <meta property="article:author" content="胡四毛">
 <meta name="twitter:card" content="summary">
   
@@ -156,103 +160,670 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-操作系统总结" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      操作系统特性
+    </h1>
+  
+
+        
+        <a href="/2020/09/16/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%80%BB%E7%BB%93/" class="archive-article-date">
+  	<time datetime="2020-09-16T07:33:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-16</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="windows和linux调度"><a href="#windows和linux调度" class="headerlink" title="windows和linux调度"></a>windows和linux调度</h1><h3 id="windows"><a href="#windows" class="headerlink" title="windows"></a>windows</h3><p>Windows操作系统的调度模块采用的是基于优先级的可抢占调度，保证了一定的实时性支持</p>
+<p>当一个线程变为就绪态时，或者有线程离开了运行态，再或者线程的优先级和处理器亲和性等发生了改变，都会触发分发器对线程的重新调度。</p>
+<p>Windows的‘剥夺式’调度中线程的调度与切换是分离的，新调度线程不会导致切换，否则中断返回现场不对</p>
+<p>Windows中进程、线程是<strong>层次结构</strong>，首先进程拥有一层调度优先级，然后同进程内的线程又拥有一层调度优先级</p>
+<p>Windows系统中的<strong>进程是不会被调度</strong>的，因为本身没有运行资源，必须依靠线程来运行。</p>
+<h3 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h3><p>Linux中的进程状态被存储在task_struct的state域中，用来标记当前进程描述符所表示的进程在操作系统中的存在状态</p>
+<p>Linux内核中的进程控制块task_struct，同时也是线程在使用的线程控制块，Linux的进程在创建之初就是一个可调度的单位</p>
+<p><strong>进程与进程之间保持很高的独立性</strong>，只有通过各种进程间通信的方式才能够相互交流</p>
+<p>Linux<strong>五种不同的进程状态</strong>，每个状态都表示了进程的一个特定的运行阶段：<br>1，<strong>TASK_RUNNING</strong>表示运行状态，表示当前进程是可执行的，即进程正在CPU上执行或者进程在运行队列中等待被调度运行。当进程正处于CPU上运行时，则进入该状态的正在运行阶段，当进程从CPU上切换下来但仍处于适合运行的状态时，则进入该状态的就绪阶段。一个进程无论是在用户空间执行还是内核空间执行，其state域中都是这个值。<br>2，<strong>TASK_INTERRUPTIBLE</strong>表示可中断睡眠状态，表示当前进程正在睡眠，由其命名可以看出，该状态可以被打断。所以它是一种可以被唤醒的睡眠状态，进程等待的条件达成，系统内核会用通知的方法把进程唤醒并设置为运行态。<br>3，<strong>TASK_UNINTERRUPTIBLE</strong>表示不可中断睡眠状态，表示进程正在睡眠且对信号等不做相应，这种状态一般只使用在进程的创建过程中。在进程的正常运行状态下，进程的睡眠等待都是有目的，因此该状态使用的比较少。<br>4，<strong>TASK_ZOMBIE</strong>表示僵尸状态，当前进程已经结束了其运行函数并且停止，但是其进程描述符还被保留在系统中以供其父进程获取。<br>5，<strong>TASK_STOPPED</strong>表示停止状态，此时进程处于不工作状态，不能被调度运行。该状态是进程接收到SIGSTOP、SIGTSTP、SIGTTIN、SIGTTOU等信号时进入的状态</p>
+<h1 id="多线程共享什么数据"><a href="#多线程共享什么数据" class="headerlink" title="多线程共享什么数据"></a>多线程共享什么数据</h1><a id="more"></a>
+
+<ul>
+<li>进程代码段</li>
+<li>进程的公有数据</li>
+<li>进程打开的文件描述符</li>
+<li>信号的处理器</li>
+<li>进程的当前目录</li>
+<li>进程用户ID与进程组ID</li>
+</ul>
+<h1 id="线程同步的方式"><a href="#线程同步的方式" class="headerlink" title="线程同步的方式"></a>线程同步的方式</h1><p>信号量</p>
+<p>允许统一时刻多个线程访问同一个资源，但需要控制统一时刻访问此资源的最大线程数量</p>
+<p>互斥量</p>
+<p>实际上是信号量的一种特殊情况，允许统一时刻只有一个线程访问同一个资源</p>
+<p>信号，也叫事件</p>
+<p>通过通知操作的方式来保证多线程同步，还可以方便实现多线程优先级的比较操作</p>
+<h1 id="线程与进程"><a href="#线程与进程" class="headerlink" title="线程与进程"></a>线程与进程</h1><h3 id="线程和进程的区别"><a href="#线程和进程的区别" class="headerlink" title="线程和进程的区别"></a>线程和进程的区别</h3><p>（1）从功能来说：<br>线程：是操作系统的任务调度和执行的基本单位<br>进程：是资源分配的基本单位<br>（2）从构成来说<br>进程：内部含有线程和逻辑内存（进程间相互独立）<br>线程：栈（存放方法的参数，局部变量等），PC（下一条指令的地址，指向进程里的逻辑内存）<br>所以说：一个进程中有一个或多个线程<br>（3）从开销来说：每个进程都有独立的代码和数据空间（程序上下文），程序之间的切换会有较大的开销；线程可以看做轻量级的进程，同一类线程共享代码和数据空间，每个线程都有自己独立的运行栈和程序计数器（PC），线程之间切换的开销小</p>
+<h3 id="程序和进程的区别"><a href="#程序和进程的区别" class="headerlink" title="程序和进程的区别"></a>程序和进程的区别</h3><p>程序：程序只是一组指令的有序集合，它本身没有任何运行的含义，它只是一个静态的实体。<br>进程：它是程序在某个数据集上的执行，进程是一个动态的实体。<br>总结：运行的程序至少有一个进程</p>
+<h1 id="进程的意义"><a href="#进程的意义" class="headerlink" title="进程的意义"></a>进程的意义</h1><p>调度：合理分配计算资源，让不同的代码逻辑能够及时得到处理</p>
+<p>在调度过程中，必须设计一套模型，使得各个代码逻辑在执行过程中，关于存储空间的利用不会互相干扰，并且CPU能完整地执行完各个逻辑，引出了上下文（某个执行中代码逻辑的前后关系和存储状态）。</p>
+<p>进程：维护好上下文需要将每个独立的代码逻辑当做一个完整而封闭的执行单元来区别处理</p>
+<h1 id="进程切换"><a href="#进程切换" class="headerlink" title="进程切换"></a>进程切换</h1><p><strong>从正在运行的用户态进程X切换到正在运行的用户态进程Y的过程</strong><br> 1.正在运行的用户态进程X<br> 2.发生中断——save cs：eip/esp/eflags(current)to kernel stack,then load cs:eip(entry of a specific ISR)and ss:esp(point to kernel stack)<br> 3.SAVE_ALL//保存现场<br> 4.中断处理过程中或中断返回前调用了schedule(),其中的switch_to做了关键的进程上下文切换<br> 5.标号1之后开始运行用户态进程Y(这里Y曾经通过以上步骤被切换出去过因此可以从标号1继续执行）<br> 6.restore-all//恢复现场<br> 7.iret -pop cs:eip/ss:eip/eflags from kernel stack（retf或者iret才能够做到由高特权级别转移到低特权级别）<br> 8.继续运行用户态进程Y</p>
+<h1 id="用户态和内核态"><a href="#用户态和内核态" class="headerlink" title="用户态和内核态"></a>用户态和内核态</h1><p><strong>内核态</strong>：当一个任务（进程）执行系统调用而陷入内核代码中执行时，我们就称进程处于内核运行态（或简称为内核态）</p>
+<p><strong>用户态</strong>：当进程在执行用户自己的代码时，则称其处于用户运行态（用户态）。</p>
+<p>当程序运行在<strong>3级特权级</strong>上时，就可以称之为运行在用户态，因为这是最低特权级，是普通的用户进程运行的特权级，大部分用户直接面对的程序都是运行在用户态；反之，当程序运行在<strong>0级特权级</strong>上时，就可以称之为运行在内核态。</p>
+<h3 id="用户态和内核态的转换"><a href="#用户态和内核态的转换" class="headerlink" title="用户态和内核态的转换"></a>用户态和内核态的转换</h3><p>1）用户态切换到内核态的3种方式</p>
+<p>a. 系统调用</p>
+<p>这是用户态进程主动要求切换到内核态的一种方式，用户态进程通过系统调用申请使用操作系统提供的服务程序完成工作，比如前例中fork()实际上就是执行了一个创建新进程的系统调用。而系统调用的机制其核心还是使用了操作系统为用户特别开放的一个中断来实现，例如Linux的int 80h中断。</p>
+<p>b. 异常</p>
+<p>当CPU在执行运行在用户态下的程序时，发生了某些事先不可知的异常，这时会触发由当前运行进程切换到处理此异常的内核相关程序中，也就转到了内核态，比如缺页异常。</p>
+<p>c. 外围设备的中断</p>
+<p>当外围设备完成用户请求的操作后，会向CPU发出相应的中断信号，这时CPU会暂停执行下一条即将要执行的指令转而去执行与中断信号对应的处理程序，如果先前执行的指令是用户态下的程序，那么这个转换的过程自然也就发生了由用户态到内核态的切换。比如硬盘读写操作完成，系统会切换到硬盘读写的中断处理程序中执行后续操作等。</p>
+<h1 id="进程间通信方式"><a href="#进程间通信方式" class="headerlink" title="进程间通信方式"></a>进程间通信方式</h1><ul>
+<li>管道：速度慢，容量有限，只能父子进程通信</li>
+</ul>
+<p>半双工：数据只能在一个方向流动，有固定读端和写端<br> 仅能用于亲缘关系进程间通信：父子进程<br> 只存在于内存：可以看做特殊的文件，也可以用read和write。但是他不是普通的文件，并不输入任何文件系统。</p>
+<ul>
+<li><p>FIFO：任何进程间都可以通信，但是速度慢，有路径名，以特殊设备文件形式存在于文件系统</p>
+</li>
+<li><p>消息队列：消息的链表，存放在内核中并由消息队列标识符标识</p>
+<p>​                        容量受系统限制，且需要考虑上次未读完内容。</p>
+</li>
+<li><p>信号量：不能传递复杂消息，只能用于同步</p>
+<p>​                    一个计数器，用来控制多个进程对资源的访问，通常作为一种锁机制</p>
+</li>
+<li><p>共享内存：映射一段能被其他进程访问的内存，这段共享内存由一个进程创建，但是多个进程可以访问</p>
+<p>​                        容易控制容量，速度快，但要保持同步。</p>
+</li>
+</ul>
+<h1 id="线程间通信"><a href="#线程间通信" class="headerlink" title="线程间通信"></a>线程间通信</h1><h4 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h4><p>多个线程通过synchronized通讯，类似于共享内存</p>
+<h4 id="while轮询"><a href="#while轮询" class="headerlink" title="while轮询"></a>while轮询</h4><p>线程A不断改变条件，线程B不断查看条件是否满足需求（比方说=5），从而实现通讯。<br> 效率不高，因为B一直在查看，没做别的</p>
+<h4 id="wait-notify"><a href="#wait-notify" class="headerlink" title="wait/notify"></a>wait/notify</h4><p>进入阻塞，而不是像轮询一样一直占用CPU资源</p>
+<h4 id="管道通信"><a href="#管道通信" class="headerlink" title="管道通信"></a>管道通信</h4><p>通过管道，将一个线程的消息发送个另一个线程</p>
+<h1 id="多线程锁实现多线程同步"><a href="#多线程锁实现多线程同步" class="headerlink" title="多线程锁实现多线程同步"></a>多线程锁实现多线程同步</h1><p>互斥锁</p>
+<p>保护临界区，确保同一时间，只有一个线程访问数据。</p>
+<p>如果互斥量已经上锁，调用线程会阻塞，直到互斥量被解锁</p>
+<p>自旋锁</p>
+<p>在获取到锁之前，一直处于循环检测保持者是否已经释放了锁。</p>
+<p>与互斥锁的区别是，在申请自旋锁时，线程处于忙等状态，而非挂起状态</p>
+<p>信号量</p>
+<p>一个计数器，用来控制多个进程对共享资源的访问。</p>
+<p>互斥锁为信号量的一个特殊情况。</p>
+<p>读写锁</p>
+<p>高级别锁，区分读和写，符合条件时，允许多个线程访问对象。</p>
+<p>处于读锁时，允许其他线程和本线程的读锁，但不允许写锁。</p>
+<p>处于写锁时，任何锁操作都会睡眠等待</p>
+<p>递归锁</p>
+<p>递归锁是互斥锁的一个特殊情况。同样地，只能由一个线程访问该对象，但允许同一个线程在未释放其拥有的锁时，反复对锁进行加锁操作</p>
+<h1 id="操作系统如何进行寻址操作的呢"><a href="#操作系统如何进行寻址操作的呢" class="headerlink" title="操作系统如何进行寻址操作的呢"></a>操作系统如何进行寻址操作的呢</h1><p>首先根据指针指针访问进程中的逻辑地址，但逻辑地址是虚拟的，需要我们把它解析成他们在物理内存中的地址（也可能不在物理内存中，可能是操作系统虚拟出的内存，虚拟内存以分页的形式存放在物理内存中），最后找到后拿给CPU的寄存器即可</p>
+<h1 id="进程状态"><a href="#进程状态" class="headerlink" title="进程状态"></a>进程状态</h1><ol>
+<li>就绪状态：进程已经获得了除处理机以外的所需资源，正在等待分配处理机资源</li>
+<li>运行状态：占用处理机资源运行，处于此状态的进程数小于CPU数</li>
+<li>阻塞状态：进程等待某种条件，在条件满足之前无法执行</li>
+</ol>
+<h1 id="僵尸进程"><a href="#僵尸进程" class="headerlink" title="僵尸进程"></a>僵尸进程</h1><ul>
+<li><p>子进程的结束和父进程的运行是一个异步过程，即父进程永远无法预测子进程到底什么时候结束. </p>
+</li>
+<li><p>UNⅨ提供了一种机制可以保证只要父进程想知道子进程结束时的状态信息， 就可以得到。这种机制就是： 在每个进程退出的时候，内核释放该进程所有的资源，包括打开的文件，占用的内存等。</p>
+</li>
+<li><p><strong>意义</strong>：但是仍然为其保留一定的信息（包括进程号the process ID，退出状态the termination status of the process，运行时间the amount of CPU time taken by the process等）。<strong>直到父进程通过wait / waitpid来取时才释放.</strong> </p>
+</li>
+<li><p>父进程不调用wait / waitpid的话，那么保留的那段信息就不会释放，其进程号就会一直被占用，</p>
+</li>
+<li><p>但是系统所能使用的进程号是有限的，如果大量的产生僵死进程，将因为没有可用的进程号而导致系统不能产生新的进程.</p>
+</li>
+</ul>
+<h3 id="僵尸进程的避免："><a href="#僵尸进程的避免：" class="headerlink" title="僵尸进程的避免："></a>僵尸进程的避免：</h3><p>⒈父进程通过wait和waitpid等函数等待子进程结束，这会导致父进程挂起。</p>
+<p>⒉ 如果父进程很忙，那么可以用signal函数为SIGCHLD安装handler，因为子进程结束后， 父进程会收到该信号，可以在handler中调用wait回收。</p>
+<p>⒊ 如果父进程不关心子进程什么时候结束，那么可以用signal（SIGCHLD,SIG_IGN） 通知内核，自己对子进程的结束不感兴趣，那么子进程结束后，内核会回收， 并不再给父进程发送信号。</p>
+<p>⒋ ？？还有一些技巧，就是fork两次，父进程fork一个子进程，然后继续工作，子进程fork一 个孙进程后退出，那么孙进程被init接管，孙进程结束后，init会回收。不过子进程的回收还要自己做</p>
+<h1 id="进程调度策略"><a href="#进程调度策略" class="headerlink" title="进程调度策略"></a>进程调度策略</h1><p>先来先服务、短进程优先、优先级、时间片轮转、多级反馈、最短剩余时间优先、高响应比优先调度算法</p>
+<ul>
+<li><p>先来先服务：</p>
+<ul>
+<li>先来先服务调度算法是一种最简单的调度算法，也称为先进先出或严格排队方案。当每个进程就绪后，它加入就绪队列。当前正运行的进程停止执行，选择在就绪队列中存在时间最长的进程运行。该算法既可以用于作业调度，也可以用于进程调度。</li>
+<li>比较适合于常作业（进程），而不利于段作业（进程）。</li>
+</ul>
+</li>
+<li><p>时间片轮转： </p>
+<ul>
+<li>时间片轮转调度算法主要适用于分时系统。</li>
+<li>在这种算法中，系统将所有就绪进程按到达时间的先后次序排成一个队列，进程调度程序总是选择就绪队列中第一个进程执行，即先来先服务的原则，但仅能运行一个时间片，如100ms。在使用完一个时间片后，即使进程并未完成其运行，它也必须释放出（被剥夺）处理机给下一个就绪的进程，而被剥夺的进程返回到就绪队列的末尾重新排队，等候再次运行</li>
+<li>时间片的长短通常由以下因素确定：系统的响应时间、就绪队列中的进程数目和系统的处理能力。</li>
+</ul>
+</li>
+<li><p>短作业(SJF)优先调度算法：</p>
+<ul>
+<li>短作业优先(SJF)调度算法是从后备队列中选择一个或若干个估计运行时间最短的作业，将它们调入内存运行。而短进程优先(SPF)调度算法，则是从就绪队列中选择一个<strong>估计运行时间最短</strong>的进程，将处理机分配给它，使之立即执行，直到完成或发生某事件而阻塞时，才释放处理机。</li>
+<li>该算法对长作业不利，“饥饿”现象</li>
+</ul>
+</li>
+<li><p>最短剩余时间优先：</p>
+<ul>
+<li>进程调度总是选择预期剩余时间最短的进程。</li>
+<li>只要新进程就绪，调度程序就能可能抢占当前正在运行的进程。</li>
+</ul>
+</li>
+<li><p>高响应比优先调度算法</p>
+<ul>
+<li>根据比率：R=(w+s)/s （R为响应比，w为等待处理的时间，s为预计的服务时间）</li>
+<li>和最短进程优先、最短剩余时间优先一样，使用最高响应比策略需要估计预计服务时间。</li>
+</ul>
+</li>
+<li><p>优先级调度算法</p>
+<ul>
+<li>优先级调度算法每次从后备作业队列中选择优先级最髙的一个或几个作业，将它们调入内存，分配必要的资源，创建进程并放入就绪队列。</li>
+<li>将该调度算法分为：<ul>
+<li>非剥夺式优先级调度算法。当某一个进程正在处理机上运行时，即使有某个更为重要或紧迫的进程进入就绪队列，仍然让正在运行的进程继续运行，直到由于其自身的原因而主动让出处理机时（任务完成或等待事件），才把处理机分配给更为重要或紧迫的进程。</li>
+<li>剥夺式优先级调度算法。当一个进程正在处理机上运行时，若有某个更为重要或紧迫的进程进入就绪队列，则立即暂停正在运行的进程，将处理机分配给更重要或紧迫的进程。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>多级反馈队列算法</p>
+<ul>
+<li><p>不必事先知道各种进程所需要执行的时间</p>
+</li>
+<li><p>实现思想如下：</p>
+<ol>
+<li>应设置多个就绪队列，并为各个队列赋予不同的优先级，第1级队列的优先级最高，第2级队列次之，其余队列的优先级逐次降低。</li>
+<li>赋予各个队列中进程执行时间片的大小也各不相同，在优先级越高的队列中，每个进程的运行时间片就越小。例如，第2级队列的时间片要比第1级队列的时间片长一倍， ……第i+1级队列的时间片要比第i级队列的时间片长一倍。</li>
+<li>当一个新进程进入内存后，首先将它放入第1级队列的末尾，按FCFS原则排队等待调度。当轮到该进程执行时，如它能在该时间片内完成，便可准备撤离系统；如果它在一个时间片结束时尚未完成，调度程序便将该进程转入第2级队列的末尾，再同样地按FCFS 原则等待调度执行；如果它在第2级队列中运行一个时间片后仍未完成，再以同样的方法放入第3级队列……如此下去，当一个长进程从第1级队列依次降到第 n 级队列后，在第 n 级队列中便釆用时间片轮转的方式运行。</li>
+<li>仅当第1级队列为空时，调度程序才调度第2级队列中的进程运行；仅当第1 ~ (i-1)级队列均为空时，才会调度第i级队列中的进程运行。如果处理机正在执行第i级队列中的某进程时，又有新进程进入优先级较高的队列（第 1 ~ (i-1)中的任何一个队列），则此时新进程将抢占正在运行进程的处理机，即由调度程序把正在运行的进程放回到第i级队列的末尾，把处理机分配给新到的更高优先级的进程。</li>
+</ol>
+</li>
+<li><p>多级反馈队列的优势有：</p>
+<ul>
+<li>终端型作业用户：短作业优先。</li>
+<li>短批处理作业用户：周转时间较短。</li>
+<li>长批处理作业用户：经过前面几个队列得到部分执行，不会长期得不到处理。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="存储器层次"><a href="#存储器层次" class="headerlink" title="存储器层次"></a>存储器层次</h1><p><em>操作系统的储存分为哪几部分？</em><br><em>硬盘，内存和CPU中的缓存和寄存器</em></p>
+<p>寄存器、高速缓存、主存储器、磁盘缓存、固定磁盘、可移动存储介质</p>
+<p>快——&gt;慢</p>
+<h1 id="内存的管理策略"><a href="#内存的管理策略" class="headerlink" title="内存的管理策略"></a>内存的管理策略</h1><p>当允许进程动态增长时，操作系统必须对内存进行更有效的管理，操作系统使用如下两种方法之一来得知内存的使用情况，分别为1<strong>位图</strong>(bitmap) 和<strong>链表</strong></p>
+<h3 id="内存空间分配算法"><a href="#内存空间分配算法" class="headerlink" title="内存空间分配算法"></a>内存空间分配算法</h3><p>临近适应算法(Next fit)—从当前位置开始，搜索第一个能满足进程要求的内存空间<br>最佳- 适应算法(Best fit)—搜索整个链表，找到能满足进程要求最小内存的内存空间<br>最大适应算法(Wrost fit)—找到当前内存中最大的空闲空间<br>首次适应算法(First fit) —从链表的第一个开始，找到第一个能满足进程要求的内存空间</p>
+<h1 id="虚拟内存"><a href="#虚拟内存" class="headerlink" title="虚拟内存"></a>虚拟内存</h1><p>虚拟内存的基本思想是，每个进程有用独立的逻辑地址空间，内存被分为大小相等的多个块,称为页(Page).每个页都是一段连续的地址。</p>
+<p>虚拟内存中，允许将一个作业分多次调入内存，使得程序员在比主存空间大得多的逻辑地址空间中编写程序</p>
+<p>页表就是来表示逻辑地址和物理地址之间的映射。</p>
+<p>虚拟内存的页并不存在于物理内存中（如图5的3,4），会产生<strong>缺页中断</strong>，从磁盘中取得缺的页放入内存，如果内存已满，还会根据某种算法将磁盘中的页换出。</p>
+<p>优点：</p>
+<ul>
+<li><p>虚拟内存可以大于物理内存，一般为物理内存的1.5倍到3倍，从而可以运行比物理内存大的程序</p>
+</li>
+<li><p>进而使得更多的程序可以同时执行，提高了多道程序的程度，增加了CPU的使用率</p>
+</li>
+<li><p>并且使得进程之间的独立性得到了更好的体现。</p>
+<p>虚拟存储器是由硬件和操作系统自动实现存储信息调度和管理的。它的<strong>工作过程包括6个步骤</strong>：</p>
+<p>（1）中央处理器访问主存的逻辑地址分解成组号a和组内地址b，并对组号a进行地址变换，即将逻辑组号a作为索引，查地址变换表，以确定该组信息是否存放在主存内。</p>
+<p>（2）如该组号已在主存内，则转而执行④；如果该组号不在主存内，则检查主存中是否有空闲区，如果没有，便将某个暂时不用的组调出送往辅存，以便将这组信息调入主存。</p>
+<p>（3）从辅存读出所要的组，并送到主存空闲区，然后将那个空闲的物理组号a和逻辑组号a登录在地址变换表中。</p>
+<p>（4）从地址变换表读出与逻辑组号a对应的物理组号a。</p>
+<p>（5）从物理组号a和组内字节地址b得到物理地址。</p>
+<p>（6）根据物理地址从主存中存取必要的信息。</p>
+</li>
+</ul>
+<h3 id="页面替换算法"><a href="#页面替换算法" class="headerlink" title="页面替换算法"></a>页面替换算法</h3><ul>
+<li>最近不常使用算法(Not Recently Used Replacement Algorithm)</li>
+</ul>
+<p>这种算法给每个页一个标志位，R表示最近被访问过，M表示被修改过。定期对R进行清零。这个算法的思路是首先淘汰那些未被访问过R=0的页，其次是被访问过R=1,未被修改过M=0的页，最后是R=1,M=1的页。</p>
+<ul>
+<li>先进先出页面置换算法(First-In,First-Out Page Replacement Algorithm)</li>
+</ul>
+<p>这种算法的思想是淘汰在内存中最久的页，这种算法的性能接近于随机淘汰。并不好。</p>
+<ul>
+<li>改进型FIFO算法(Second Chance Page Replacement Algorithm)</li>
+</ul>
+<p>这种算法是在FIFO的基础上，为了避免置换出经常使用的页，增加一个标志位R，如果最近使用过将R置1，当页将会淘汰时，如果R为1，则不淘汰页，将R置0.而那些R=0的页将被淘汰时，直接淘汰。这种算法避免了经常被使用的页被淘汰。</p>
+<ul>
+<li>时钟替换算法(Clock Page Replacement Algorithm)</li>
+</ul>
+<p>虽然改进型FIFO算法避免置换出常用的页，但由于需要经常移动页，效率并不高。因此在改进型FIFO算法的基础上，将队列首位相连形成一个环路，当缺页中断产生时，从当前位置开始找R=0的页，而所经过的R=1的页被置0，并不需要移动页。</p>
+<h1 id="分页分段"><a href="#分页分段" class="headerlink" title="分页分段"></a>分页分段</h1><ul>
+<li>段式存储管理是一种符合用户视角的内存分配管理方案。在段式存储管理中，将程序的地址空间划分为若干段，如代码段、数据段、堆栈段。每个进程有一个二维地址空间，相互独立，互不打扰。</li>
+</ul>
+<p>段式存储管理的优点是：没有内碎片，因为段大小可变，可以通过改变段的大小而消除内碎片。但会产生外碎片，比如4K的段换5K的段，会产生1K的外碎片</p>
+<ul>
+<li>页式存储管理是一种用户视角内存与物理内存相分离的内存分配管理方案。在页式存储管理中，将程序的逻辑地址划分为固定大小的页，而物理内存划分为同样大小的帧。程序加载时，可将任意一页放入内存中任意一个帧，这些帧不必连续，从而实现了离散分离。</li>
+</ul>
+<p>页式存储管理的优点是：没有外碎片，因为页的大小固定，但会产生内碎片，因为一个页可能填充不满</p>
+<ul>
+<li>两者的不同点：目大地信内</li>
+</ul>
+<p>目的不同：分页是由于系统管理的需要，是信息的物理单位。分段是由于用户的需要，是信息的逻辑单位。<br>大小不同：页的大小固定，由系统决定。段的大小不固定，由其完成的功能决定<br>地址空间不同：页向用户提供一维地址空间，段向用户提供二维地址空间<br>信息共享：页的保护和共享收到限制，段利于存储保护和信息共享<br>内存碎片：分页没有外碎片，但有内碎片；分段没有内碎片，但有外碎片</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>分  页</th>
+<th>分  段</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>目 的</td>
+<td>页是信息的物理单位，分页是为实现离散分配方式，以消减内存的外零头，提髙内存的利 用率。或者说，分页仅权是由于系统管理的需要而不是用户的需要</td>
+<td>是信息的逻辑单位，它含有一组其意义相对完整的信息。分段的目的是为了能更好地满足用户的需要</td>
+</tr>
+<tr>
+<td>长 度</td>
+<td>页的大小固定且由系统决定，由系统把逻辑地址划分为页号和页内地址两部分，是由机器硬件实现的，因而在系统中只能有一种大小的页面</td>
+<td>段的长度不固定，决定于用户所编写的程序， 通常由编译程序在对流程序进行编译时，根据信息的性质来划分</td>
+</tr>
+<tr>
+<td>地址空间</td>
+<td>作业地址空间是一维的，即单一的线性地址空间，程序员只需利用一个记忆符，即可表示 一个地址</td>
+<td>作业地址空间是二维的，程序员在标识一个地址时，既需给出段名，又需给出段内地址</td>
+</tr>
+<tr>
+<td>碎 片</td>
+<td>有内部碎片  无外部碎片</td>
+<td>有外部碎片  无内部碎片</td>
+</tr>
+<tr>
+<td>”共享“和“动态链接”</td>
+<td>不容易实现</td>
+<td>容易实现</td>
+</tr>
+</tbody></table>
+<h3 id="虚拟地址与物理地址转换"><a href="#虚拟地址与物理地址转换" class="headerlink" title="虚拟地址与物理地址转换"></a>虚拟地址与物理地址转换</h3><p><strong>将虚拟内存空间和物理内存空间皆划分成大小相同的页面</strong>，例如4KB（2^12）、8KB和16KB等。并将<strong>页作为内存空间的最小分配单位</strong>，一个程序的一个页面(虚拟页面)可以存放在任何一个物理页面中。</p>
+<p>32位系统是20位页面地址，12位页内偏移。</p>
+<p>虚拟地址-&gt;物理地址的转化：</p>
+<ol>
+<li>Cpu-&gt;MMU。翻译工作则是交给<strong>MMU(内存管理单元</strong>)，它只对虚拟地址的<strong>页面号进行翻译</strong>（在也表中找到虚拟页面对应的物理页面，若缺页则中断），而<strong>不处理页内偏移值</strong>。</li>
+</ol>
+<h3 id="不同进程访问相同的逻辑地址，变量不同"><a href="#不同进程访问相同的逻辑地址，变量不同" class="headerlink" title="不同进程访问相同的逻辑地址，变量不同"></a>不同进程访问相同的逻辑地址，变量不同</h3><p>linux系统下每个进程都拥有自己的页表，父进程fork出新的子进程时，子进程拷贝一份父进程的页表，且父子进程将页表状态修改为写保护。当父子进程中的进程发生写操作时将会发生缺页异常，缺页异常处理函数将会为父子进程各自分配新的物理地址。所以不同的进程访问同样的逻辑地址而对应的物理地址不同，是由于各自页表的不同</p>
+<h1 id="linux常见操作命令"><a href="#linux常见操作命令" class="headerlink" title="linux常见操作命令"></a>linux常见操作命令</h1><h3 id="常见命令"><a href="#常见命令" class="headerlink" title="常见命令"></a>常见命令</h3><p>cd 进入当前目录</p>
+<p>mkdir 创建文件夹</p>
+<p>ls查看目录</p>
+<p>touch 创建文件，touch newfile 该命令创建一个名为newfile的空白文件。</p>
+<p>su 进入root权限帐户解决帐户权限不够的问题</p>
+<p>rm 删除文件或文件夹 <strong>rm -f 删除文件</strong>，<strong>rm-rf 删除文件夹</strong></p>
+<p>rmdir      删除空目录</p>
+<p>cp 复制文件cp / / / mv 移动文件 mv / / /</p>
+<p>vim 打开txt文件编辑 </p>
+<p>echo      创建带有内容的文件。</p>
+<p>cat 查看txt文件，可以用来合并文件，也可以用来在屏幕上显示整个文件的内容。</p>
+<p>find /name 文件检索</p>
+<p>pwd命令:print working directory(打印工作目录)。输入pwd命令，Linux会输出当前目录</p>
+<p>grep命令 ： grep命令的最大功能是在一堆文件中查找一个特定的字符串。例如：grep money test.txt</p>
+<p>more、less 分页显示文本文件内容</p>
+<p>head、tail  显示文件头、尾内容</p>
+<p>wc        统计文本中行数、字数、字符数</p>
+<p>/etc 配置文件保存目录</p>
+<h3 id="详细解释"><a href="#详细解释" class="headerlink" title="详细解释"></a>详细解释</h3><h4 id="cd"><a href="#cd" class="headerlink" title="cd"></a>cd</h4><p>cd /   转到根目录中<br>cd ~   转到/home/user用户目录下<br>cd /usr 转到根目录下的usr目录中————-绝对路径<br>cd test 转到当前目录下的test子目录中——-相对路径</p>
+<h4 id="ls"><a href="#ls" class="headerlink" title="ls"></a>ls</h4><ul>
+<li>ls -a 显示所有文件，包含隐藏文件。其中以.开头的文件为隐含文件，直接用ls命令无法看到</li>
+<li>Ls -al a参数与l参数结合使用，以长列表形式显示所有目录及文件详细信息<ul>
+<li>包括文件类型、文件权限、硬连接数、文件拥有者、文件所属组、文件大小、更动时间、文件名等。</li>
+<li>ls -al | more 通过管道进行more命令处理，分页</li>
+<li>ls -al /etc | more 其中，/etc 为配置文件保存目录</li>
+</ul>
+</li>
+<li>ls -lh h参数与l参数结合，更合理的显示文件的大小</li>
+<li>ls -d */只列出目录信息，而不显示文件</li>
+<li>ls -R  显示目录及多级子目录下的文件及目录信息</li>
+<li>ls -il  在第一列显示inode信息，即文件索引信息</li>
+<li>ls -lt  按修改时间排序，正序显示</li>
+<li>ls -ltr  按修改时间排序，反序显示</li>
+</ul>
+<h4 id="more"><a href="#more" class="headerlink" title="more"></a>more</h4><p>more命令一般用于显示内容超过一屏的文件。其他命令经常和more匹配使用，但more命令也客单独使用.</p>
+<ol>
+<li>其他命令和more命令匹配使用：<br>格式：  其他命令格式|more</li>
+<li>more 命令单独使用：<br>格式：<br>more [选项] 文件  或者  more [-dlfpcsu] [-num] [+/pattern] [+linenum] [fileNames..] </li>
+</ol>
+<p>more -s testfile        %逐页显示 testfile 之档案内容，如有连续两行以上空白行则以一行空白行显示。<br>more +20 testfile     %从第 20 行开始显示 testfile 之档案内容。<br>more example1.c    % 用分页的方式显示一个文件的内容。<br>more -c -10 example1.c      % 执行该命令后，先清屏，然后将以每十行每十行的方式显示文件</p>
+<h4 id="cp"><a href="#cp" class="headerlink" title="cp"></a>cp</h4><p>cp <source filename> <target filename></p>
+<p>用法：cp t.txt Document/t  该命令将把文件t.txt复制到Document目录下，并命名为t。</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-i</td>
+<td>互动：如果文件将覆盖目标中的文件，他会提示确认</td>
+</tr>
+<tr>
+<td>-r</td>
+<td>递归：这个选项会复制整个目录树、子目录以及其他</td>
+</tr>
+<tr>
+<td>-v</td>
+<td>详细：显示文件的复制进度</td>
+</tr>
+</tbody></table>
+<h4 id="mv"><a href="#mv" class="headerlink" title="mv"></a>mv</h4><p>mv t.txt Document  把文件t.txt 移动到目录Document中。</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-i</td>
+<td>互动：如果选择的文件会覆盖目标中的文件，他会提示确认</td>
+</tr>
+<tr>
+<td>-f</td>
+<td>强制：它会超越互动模式，不提示地移动文件，属于很危险的选项</td>
+</tr>
+<tr>
+<td>-v</td>
+<td>详细：显示文件的移动进度</td>
+</tr>
+</tbody></table>
+<h4 id="rm"><a href="#rm" class="headerlink" title="rm"></a>rm</h4><p>rm t.txt  该命令删除文件t.txt</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-i</td>
+<td>互动：提示确认删除</td>
+</tr>
+<tr>
+<td>-f</td>
+<td>强制：代替互动模式，不提示确认删除</td>
+</tr>
+<tr>
+<td>-v</td>
+<td>详细：显示文件的删除进度</td>
+</tr>
+<tr>
+<td>-r</td>
+<td>递归：将删除某个目录以及其中所有的文件和子目录</td>
+</tr>
+</tbody></table>
+<h4 id="vim"><a href="#vim" class="headerlink" title="vim"></a>vim</h4><p>vim三种模式：命令模式、插入模式、编辑模式。使用ESC或i或：来切换模式。</p>
+<p>:q 退出</p>
+<p>:q! 强制退出</p>
+<p>:wq保存并退出</p>
+<p>:set number显示行号</p>
+<p>:set nonumber隐藏行号</p>
+<p>/apache在文档中查找apache</p>
+<p>yyp复制光标所在行，并粘贴</p>
+<p>h、j、k、l 分别代表左移、下一行、上一行、右移</p>
+<h4 id="打包"><a href="#打包" class="headerlink" title="打包"></a>打包</h4><p>gzip</p>
+<p>bzip2</p>
+<p>tar   打包压缩</p>
+<p>-c       归档文件</p>
+<p>-x       压缩文件</p>
+<p>-z       gzip压缩文件</p>
+<p>-j       bzip2压缩文件</p>
+<p> -v       显示压缩或解压缩过程 v(view)</p>
+<p>-f       使用档名</p>
+<p>用法：tar -jcvf /home/abc.tar.bz2 /home/abc    打包，并用bzip2压缩</p>
+<h3 id="更改文件权限"><a href="#更改文件权限" class="headerlink" title="更改文件权限"></a>更改文件权限</h3><h4 id="chmod"><a href="#chmod" class="headerlink" title="chmod"></a>chmod</h4><p>两种方式：数字类型改变权限 和 符号类型改变文件权限</p>
+<h5 id="1-数字类型"><a href="#1-数字类型" class="headerlink" title="1.数字类型"></a>1.数字类型</h5><p>一般格式 chmod [-R] xyz filename</p>
+<p>[-R] 表示递归进行持续修改，即修改文件夹及文件夹下的文件权限</p>
+<p>xyz 是指rwx对应的数字和：</p>
+<p>其中每一位的权限用数字来表示。具体有这些权限：</p>
+<ul>
+<li>r(Read，读取，权限值为4)：对文件而言，具有读取文件内容的权限；对目录来说，具有浏览目 录的权限。</li>
+<li>w(Write,写入，权限值为2)：对文件而言，具有新增、修改文件内容的权限；对目录来说，具有删除、移动目录内文件的权限。</li>
+<li>x(eXecute，执行，权限值为1)：对文件而言，具有执行文件的权限；对目录了来说该用户具有进入目录的权限。</li>
+</ul>
+<p><strong>例如</strong>：777有3位，最高位7是设置文件所有者访问权限，第二位是设置群组访问权限，最低位是设置其他人访问权限。</p>
+<h5 id="2-符号类型"><a href="#2-符号类型" class="headerlink" title="2.符号类型"></a>2.符号类型</h5><p>一般格式：chmod [who] operator [permission] filename</p>
+<p>[who] u 文件属主权限，g属组用户权限，o其他用户权限，a所有用户权限</p>
+<p>operator +增加权限，-取消权限，=设定权限</p>
+<p>permission  r读权限，w写权限，x执行权限，s文件属主和组set-ID，t粘性位*，l给文件加锁，是其他用户无法访问</p>
+<h4 id="chown更改文件拥有者"><a href="#chown更改文件拥有者" class="headerlink" title="chown更改文件拥有者"></a>chown更改文件拥有者</h4><p>chown [–cfhvR] owner file</p>
+<ul>
+<li>-c : 若该档案拥有者确实已经更改，才显示其更改动作</li>
+<li>-f : 若该档案拥有者无法被更改也不要显示错误讯息</li>
+<li>-h : 只对于连结(link)进行变更，而非该 link 真正指向的档案</li>
+<li>-v : 显示拥有者变更的详细资料</li>
+<li>-R : 对目前目录下的所有档案与子目录进行相同的拥有者变更(即以递回的方式逐个变更)</li>
+<li>–help : 显示辅助说明</li>
+<li>–version : 显示版本</li>
+</ul>
+<h4 id="chgrp-更改所属用户组"><a href="#chgrp-更改所属用户组" class="headerlink" title="chgrp 更改所属用户组"></a>chgrp 更改所属用户组</h4><p>一般格式：chgrp［选项］ group filenam</p>
+<ul>
+<li>-c或–changes 效果类似”-v”参数，但仅回报更改的部分。</li>
+<li>-f或–quiet或–silent 　不显示错误信息。</li>
+<li>-h或–no-dereference 　只对符号连接的文件作修改，而不更动其他任何相关文件。</li>
+<li>-R或–recursive 　递归处理，将指定目录下的所有文件及子目录一并处理。</li>
+<li>-v或–verbose 　显示指令执行过程。</li>
+<li>–help 　在线帮助。</li>
+<li>–reference=&lt;参考文件或目录&gt; 　把指定文件或目录的所属群组全部设成和参考文件或目录的所属群组相同。</li>
+<li>–version 　显示版本信息。</li>
+</ul>
+<h4 id="basename"><a href="#basename" class="headerlink" title="basename"></a>basename</h4><p>1.获取末尾的文件名或路径名</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> basename /path/to/your/t1.fastq.gz</span></span><br><span class="line">t1.fastq</span><br></pre></td></tr></table></figure>
+
+<p>作用：把包含最后一个<code>/</code>的前面的路径都删除掉</p>
+<p>2.取消扩展名</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> basename t1.fastq.gz .gz</span></span><br><span class="line">t1.fastq</span><br></pre></td></tr></table></figure>
+
+<p>使用参数 -s -a</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> basename -s .gz t1.fastq.gz</span></span><br><span class="line">t1.fastq</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> basename -a any/str1 any/str2</span></span><br><span class="line">str1</span><br><span class="line">str2</span><br></pre></td></tr></table></figure>
+
+<h1 id="系统管理命令"><a href="#系统管理命令" class="headerlink" title="系统管理命令"></a>系统管理命令</h1><p>top        动态显示当前耗费资源最多进程信息</p>
+<ul>
+<li>top -pid 进程号  ： 查看指定进程信息</li>
+</ul>
+<p>ps         显示瞬间进程状态 ps -aux</p>
+<ul>
+<li><p>-A 列出所有的行程</p>
+</li>
+<li><p>-au 显示较详细的资讯；-aux 显示所有包含其他使用者的行程,用BSD的格式来显示</p>
+</li>
+<li><p>-ef 用标准的格式显示进程</p>
+</li>
+</ul>
+<p>ulimit  用于控制程序的资源，shell内建指令</p>
+<ul>
+<li><p>ulimit -a 显示目前资源限制的设定</p>
+</li>
+<li><p>ulimit -s 线程栈的大小上限，一般为8m，即8192kb</p>
+</li>
+<li><p>ulimit -m &lt;内存大小&gt;     用于查询&lt;指定&gt;内存的上限；</p>
+</li>
+<li><p>ulimit -v &lt;虚拟内存大小&gt;     用于查询&lt;指定&gt;内存的上限</p>
+</li>
+<li><p>ulimit -u &lt;程序数目&gt; 　用户最多可开启的程序数目，默认1392</p>
+</li>
+<li><p>ulimit -n &lt;文件数目&gt; 　指定同一时间最多可开启的文件数，默认2560</p>
+<p>w 用于显示目前登入系统的用户信息</p>
+</li>
+<li><p>w [-fhlsuV]  [用户名称]</p>
+</li>
+</ul>
+<p>df         查看磁盘大小 df -h 带有单位显示磁盘信息</p>
+<p>ifconfig     查看网络情况</p>
+<p>ping        测试网络连通</p>
+<p>netstat     显示网络状态信息,比如查看端口“80”的所有线程（netstat -an |grep ‘80’）</p>
+<p>man        命令不会用了，找男人 如：man ls</p>
+<p>kill         杀死进程，可以先用ps 或 top命令查看进程的id，然后再用kill命令杀死进程。</p>
+<p>skill        送个讯号给正在执行的程序，预设的讯息为 TERM (中断)</p>
+<ul>
+<li>skill [signal to send] [options] 选择程序的规则</li>
+<li>例如：skill -STOP user1 user2 user3（停止三个使用者）；skill -KILL -v pts/*（停止所有在PTY装置上的程序）</li>
+</ul>
+<p>arp        ARP命令用于显示和修改“地址解析协议（ARP）”缓存中的项目。ARP缓存中包含一个或多个表，它们用于存储IP地址及其经过解析的以太网或令牌环物理地址.</p>
+<p>cat  /proc/cpuinfo      查看CPU信息</p>
+<ul>
+<li><p>在Linux操作系统中，<code>/proc</code> 是一个虚拟的目录，它是系统内存的映射，我们可以通过直接访问这个目录来获取系统信息，例如我们可以使用 <code>cat /proc/cpuinfo</code> 查看CPU信息</p>
+</li>
+<li><p>在macOS系统中，通过sysctl设置全局的内核限制，在/etc/sysctl.conf中写入，通过配置文件永久更改</p>
+</li>
+<li><p>launchctl，为macOS特有，修改该项配置会直接同时设置sysctl的kern.maxfilesperproc参数；热修改sysctl上限值不会影响launchctl，而反之，launchctl会影响sysctl上限值</p>
+</li>
+</ul>
+<h1 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h1><p><strong>Linux管道</strong>：</p>
+<p>将一个命令的标准输出作为另一个命令的标准输入。</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/09/16/mybatis/" class="archive-article-date">
-  	<time datetime="2020-09-16T07:33:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-16</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/09/16/mybatis/">mybatis</a>
-    </h1>
-  
+      
 
-        <div class="article-info info-on-right">
-          
-          
+      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2020/09/16/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%80%BB%E7%BB%93/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/09/16/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/" class="archive-article-date">
-  	<time datetime="2020-09-16T07:33:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-16</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2020/09/16/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          我的第一篇博客文章
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/09/16/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/">我的第一篇博客文章</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#windows%E5%92%8Clinux%E8%B0%83%E5%BA%A6"><span class="toc-number">1.</span> <span class="toc-text">windows和linux调度</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#windows"><span class="toc-number">1.0.1.</span> <span class="toc-text">windows</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux"><span class="toc-number">1.0.2.</span> <span class="toc-text">Linux</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%85%B1%E4%BA%AB%E4%BB%80%E4%B9%88%E6%95%B0%E6%8D%AE"><span class="toc-number">2.</span> <span class="toc-text">多线程共享什么数据</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="toc-number">3.</span> <span class="toc-text">线程同步的方式</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E4%B8%8E%E8%BF%9B%E7%A8%8B"><span class="toc-number">4.</span> <span class="toc-text">线程与进程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E5%92%8C%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">4.0.1.</span> <span class="toc-text">线程和进程的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E5%92%8C%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">4.0.2.</span> <span class="toc-text">程序和进程的区别</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%84%8F%E4%B9%89"><span class="toc-number">5.</span> <span class="toc-text">进程的意义</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E5%88%87%E6%8D%A2"><span class="toc-number">6.</span> <span class="toc-text">进程切换</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E6%80%81%E5%92%8C%E5%86%85%E6%A0%B8%E6%80%81"><span class="toc-number">7.</span> <span class="toc-text">用户态和内核态</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E6%80%81%E5%92%8C%E5%86%85%E6%A0%B8%E6%80%81%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="toc-number">7.0.1.</span> <span class="toc-text">用户态和内核态的转换</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F"><span class="toc-number">8.</span> <span class="toc-text">进程间通信方式</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1"><span class="toc-number">9.</span> <span class="toc-text">线程间通信</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5"><span class="toc-number">9.0.0.1.</span> <span class="toc-text">同步</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#while%E8%BD%AE%E8%AF%A2"><span class="toc-number">9.0.0.2.</span> <span class="toc-text">while轮询</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#wait-notify"><span class="toc-number">9.0.0.3.</span> <span class="toc-text">wait&#x2F;notify</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AE%A1%E9%81%93%E9%80%9A%E4%BF%A1"><span class="toc-number">9.0.0.4.</span> <span class="toc-text">管道通信</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E9%94%81%E5%AE%9E%E7%8E%B0%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5"><span class="toc-number">10.</span> <span class="toc-text">多线程锁实现多线程同步</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8C%E5%AF%BB%E5%9D%80%E6%93%8D%E4%BD%9C%E7%9A%84%E5%91%A2"><span class="toc-number">11.</span> <span class="toc-text">操作系统如何进行寻址操作的呢</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%8A%B6%E6%80%81"><span class="toc-number">12.</span> <span class="toc-text">进程状态</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%83%B5%E5%B0%B8%E8%BF%9B%E7%A8%8B"><span class="toc-number">13.</span> <span class="toc-text">僵尸进程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%83%B5%E5%B0%B8%E8%BF%9B%E7%A8%8B%E7%9A%84%E9%81%BF%E5%85%8D%EF%BC%9A"><span class="toc-number">13.0.1.</span> <span class="toc-text">僵尸进程的避免：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E7%AD%96%E7%95%A5"><span class="toc-number">14.</span> <span class="toc-text">进程调度策略</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E5%99%A8%E5%B1%82%E6%AC%A1"><span class="toc-number">15.</span> <span class="toc-text">存储器层次</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E7%9A%84%E7%AE%A1%E7%90%86%E7%AD%96%E7%95%A5"><span class="toc-number">16.</span> <span class="toc-text">内存的管理策略</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4%E5%88%86%E9%85%8D%E7%AE%97%E6%B3%95"><span class="toc-number">16.0.1.</span> <span class="toc-text">内存空间分配算法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98"><span class="toc-number">17.</span> <span class="toc-text">虚拟内存</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%B5%E9%9D%A2%E6%9B%BF%E6%8D%A2%E7%AE%97%E6%B3%95"><span class="toc-number">17.0.1.</span> <span class="toc-text">页面替换算法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%86%E9%A1%B5%E5%88%86%E6%AE%B5"><span class="toc-number">18.</span> <span class="toc-text">分页分段</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E5%9C%B0%E5%9D%80%E4%B8%8E%E7%89%A9%E7%90%86%E5%9C%B0%E5%9D%80%E8%BD%AC%E6%8D%A2"><span class="toc-number">18.0.1.</span> <span class="toc-text">虚拟地址与物理地址转换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8D%E5%90%8C%E8%BF%9B%E7%A8%8B%E8%AE%BF%E9%97%AE%E7%9B%B8%E5%90%8C%E7%9A%84%E9%80%BB%E8%BE%91%E5%9C%B0%E5%9D%80%EF%BC%8C%E5%8F%98%E9%87%8F%E4%B8%8D%E5%90%8C"><span class="toc-number">18.0.2.</span> <span class="toc-text">不同进程访问相同的逻辑地址，变量不同</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#linux%E5%B8%B8%E8%A7%81%E6%93%8D%E4%BD%9C%E5%91%BD%E4%BB%A4"><span class="toc-number">19.</span> <span class="toc-text">linux常见操作命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E5%91%BD%E4%BB%A4"><span class="toc-number">19.0.1.</span> <span class="toc-text">常见命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%A6%E7%BB%86%E8%A7%A3%E9%87%8A"><span class="toc-number">19.0.2.</span> <span class="toc-text">详细解释</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#cd"><span class="toc-number">19.0.2.1.</span> <span class="toc-text">cd</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ls"><span class="toc-number">19.0.2.2.</span> <span class="toc-text">ls</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#more"><span class="toc-number">19.0.2.3.</span> <span class="toc-text">more</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#cp"><span class="toc-number">19.0.2.4.</span> <span class="toc-text">cp</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#mv"><span class="toc-number">19.0.2.5.</span> <span class="toc-text">mv</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#rm"><span class="toc-number">19.0.2.6.</span> <span class="toc-text">rm</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#vim"><span class="toc-number">19.0.2.7.</span> <span class="toc-text">vim</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%93%E5%8C%85"><span class="toc-number">19.0.2.8.</span> <span class="toc-text">打包</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B4%E6%94%B9%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90"><span class="toc-number">19.0.3.</span> <span class="toc-text">更改文件权限</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#chmod"><span class="toc-number">19.0.3.1.</span> <span class="toc-text">chmod</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E6%95%B0%E5%AD%97%E7%B1%BB%E5%9E%8B"><span class="toc-number">19.0.3.1.1.</span> <span class="toc-text">1.数字类型</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E7%AC%A6%E5%8F%B7%E7%B1%BB%E5%9E%8B"><span class="toc-number">19.0.3.1.2.</span> <span class="toc-text">2.符号类型</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#chown%E6%9B%B4%E6%94%B9%E6%96%87%E4%BB%B6%E6%8B%A5%E6%9C%89%E8%80%85"><span class="toc-number">19.0.3.2.</span> <span class="toc-text">chown更改文件拥有者</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#chgrp-%E6%9B%B4%E6%94%B9%E6%89%80%E5%B1%9E%E7%94%A8%E6%88%B7%E7%BB%84"><span class="toc-number">19.0.3.3.</span> <span class="toc-text">chgrp 更改所属用户组</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#basename"><span class="toc-number">19.0.3.4.</span> <span class="toc-text">basename</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86%E5%91%BD%E4%BB%A4"><span class="toc-number">20.</span> <span class="toc-text">系统管理命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AE%A1%E9%81%93"><span class="toc-number">21.</span> <span class="toc-text">管道</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+        
+    </div>
+</aside>
+
+
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/09/16/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%80%BB%E7%BB%93/" class="archive-article-date">
-  	<time datetime="2020-09-16T07:33:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-16</time>
-</a>
-        </div>
-    	 
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/09/16/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%80%BB%E7%BB%93/">操作系统特性</a>
-    </h1>
+  
+  <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+<script>
+  var cloudTieConfig = {
+    url: "http://example.com/2020/09/16/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%80%BB%E7%BB%93/", 
+    sourceId: "操作系统总结",
+    productKey: "true",
+    target: "cloud-tie-wrapper"
+  };
+</script>
+<script src="//img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
+
+  
 
 
           </div>
@@ -275,8 +846,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

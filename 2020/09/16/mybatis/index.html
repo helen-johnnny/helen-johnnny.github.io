@@ -29,7 +29,7 @@
   <style type="text/css">
   
     #container.show {
-      background: linear-gradient(200deg,#a0cfe4,#e8c37e);
+      background: linear-gradient(0deg,#BA5370,#F4E2D8);
     }
   </style>
   
@@ -43,7 +43,7 @@
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
     <div class="left-col" q-class="show:isShow">
       
-<div class="overlay" style="background: #4d4d4d"></div>
+<div class="overlay" style="background: linear-gradient(0deg,#BA5370,#fec8c9)"></div>
 <div class="intrude-less">
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
@@ -104,7 +104,7 @@
     <div class="mid-col" q-class="show:isShow,hide:isShow|isFalse">
       
 <nav id="mobile-nav">
-  	<div class="overlay js-overlay" style="background: #4d4d4d"></div>
+  	<div class="overlay js-overlay" style="background: linear-gradient(0deg,#BA5370,#fec8c9)"></div>
 	<div class="btnctn js-mobile-btnctn">
   		<div class="slider-trigger list" q-on="click: openSlider(e)"><i class="icon icon-sort"></i></div>
 	</div>
@@ -514,22 +514,27 @@ select id, role name, note from t role where id =#&#123;id&#125;
   
   
   
-  <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+
+  
+
+  
+
+  
+  <div id="gitment-ctn"></div> 
+<link rel="stylesheet" href="//imsun.github.io/gitment/style/default.css">
+<script src="//imsun.github.io/gitment/dist/gitment.browser.js"></script>
 <script>
-  var cloudTieConfig = {
-    url: "http://example.com/2020/09/16/mybatis/", 
-    sourceId: "mybatis",
-    productKey: "true",
-    target: "cloud-tie-wrapper"
-  };
+var gitment = new Gitment({
+  id: "http://example.com/2020/09/16/mybatis/",
+  owner: 'helen-johnnny',
+  repo: 'https://helen-johnnny.github.io',
+  oauth: {
+    client_id: '7276f80d94be347104a4',
+    client_secret: '9dac13eff0be00d1c033e1caaf6293324585ab5c',
+  },
+})
+gitment.render('gitment-ctn')
 </script>
-<script src="//img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
-  
-
-  
-
-  
-
   
 
 

@@ -8,15 +8,15 @@
   <link rel="dns-prefetch" href="http://example.com">
   <title>mybatis | 胡四毛的小BLOG</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="基础配置文件所有配置元素 顺序不能颠倒   &lt;三种使用法:property子元素，使用properties文件，程序代码传递&gt;  第一种，使用property子元素,需要在dataSource里引入参数 123&lt;properties&gt;  	&lt;property name&#x3D;&quot;database.driver&quot; value&#x3D;&quot;">
+  <meta name="description" content="MyBatis相关知识梳理。 基础配置、各模块作用、创建步骤……">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mybatis">
 <meta property="og:url" content="http://example.com/2020/09/16/mybatis/index.html">
 <meta property="og:site_name" content="胡四毛的小BLOG">
-<meta property="og:description" content="基础配置文件所有配置元素 顺序不能颠倒   &lt;三种使用法:property子元素，使用properties文件，程序代码传递&gt;  第一种，使用property子元素,需要在dataSource里引入参数 123&lt;properties&gt;  	&lt;property name&#x3D;&quot;database.driver&quot; value&#x3D;&quot;">
+<meta property="og:description" content="MyBatis相关知识梳理。 基础配置、各模块作用、创建步骤……">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-09-16T07:33:12.000Z">
-<meta property="article:modified_time" content="2020-09-16T13:37:57.126Z">
+<meta property="article:modified_time" content="2020-09-18T07:03:05.648Z">
 <meta property="article:author" content="胡四毛">
 <meta name="twitter:card" content="summary">
   
@@ -198,7 +198,11 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="基础配置文件"><a href="#基础配置文件" class="headerlink" title="基础配置文件"></a><strong>基础配置文件</strong></h3><p>所有配置元素<configuration/></p>
+        <p>MyBatis相关知识梳理。</p>
+<p>基础配置、各模块作用、创建步骤……</p>
+<a id="more"></a>
+
+<h3 id="基础配置文件"><a href="#基础配置文件" class="headerlink" title="基础配置文件"></a><strong>基础配置文件</strong></h3><p>所有配置元素<configuration/></p>
 <p>顺序不能颠倒</p>
 <ul>
 <li><p><properties/><!--系统属性--></p>
@@ -281,8 +285,6 @@
 </ul>
 </li>
 </ul>
-<a id="more"></a>
-
 <h3 id="核心接口SqlSession作用："><a href="#核心接口SqlSession作用：" class="headerlink" title="核心接口SqlSession作用："></a>核心接口<strong>SqlSession</strong>作用：</h3><ol>
 <li>获得Mapper接口</li>
 <li>发送SQL给数据库</li>
@@ -489,9 +491,18 @@ select id, role name, note from t role where id =#&#123;id&#125;
   
 <nav id="article-nav">
   
+    <a href="/2020/09/18/MySQL/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          MySQL
+        
+      </div>
+    </a>
   
-    <a href="/2020/09/16/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">我的第一篇博客文章</div>
+  
+    <a href="/2020/09/16/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%80%BB%E7%BB%93/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">操作系统特性</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -628,6 +639,26 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">MySQL</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">计算机网络</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">操作系统</a>
+              </li>
             
             <div class="clearfix"></div>
           </ul>

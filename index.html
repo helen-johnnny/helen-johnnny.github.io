@@ -176,109 +176,27 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-mybatis" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-Java基础知识" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/09/16/mybatis/">mybatis</a>
+      <a class="article-title" href="/2020/09/18/Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">Java基础知识</a>
     </h1>
   
 
         
-        <a href="/2020/09/16/mybatis/" class="archive-article-date">
-  	<time datetime="2020-09-16T07:33:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-16</time>
+        <a href="/2020/09/18/Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="archive-article-date">
+  	<time datetime="2020-09-18T07:33:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-18</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="基础配置文件"><a href="#基础配置文件" class="headerlink" title="基础配置文件"></a><strong>基础配置文件</strong></h3><p>所有配置元素<configuration/></p>
-<p>顺序不能颠倒</p>
-<ul>
-<li><p><properties/><!--系统属性--></p>
-<p>&lt;三种使用法:property子元素，使用properties文件，程序代码传递&gt;</p>
-</li>
-<li><p>第一种，使用property子元素,需要在dataSource里引入参数</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;properties&gt;</span><br><span class="line">  	&lt;property name&#x3D;&quot;database.driver&quot; value&#x3D;&quot;com.mysql.jdbc.Driver&quot;&gt;    </span><br><span class="line">&lt;&#x2F;properties&gt;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>第二种，引入properties文件,文件中名称一致,在dataSource中引入参数</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;properties resource&#x3D;&quot;jdbc.properties&quot;&#x2F;&gt;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>第三种，真实用户密码需要加解密，Resource读取jdbc配置文件，对原来用户密码解密并重置，再用SqlSessionFactoryBuilder传递properties参数</p>
-</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">String resource = <span class="string">&quot;mybatis-config.xml&quot;</span>;</span><br><span class="line">InputStream inputStream;</span><br><span class="line">InputStream in = Resource.getResourceAsStream(<span class="string">&quot;jdbc.properties&quot;</span>);</span><br><span class="line">Properties props = <span class="keyword">new</span> Properties();</span><br><span class="line">props.load(in);</span><br><span class="line">String username = props.getProperty(<span class="string">&quot;database.username&quot;</span>);</span><br><span class="line">String password = props.getProperty(<span class="string">&quot;database.password&quot;</span>);</span><br><span class="line"><span class="comment">//解密并重置</span></span><br><span class="line">props.put(<span class="string">&quot;database.username&quot;</span>,CodeUtils.decode(username));</span><br><span class="line">props.put(<span class="string">&quot;database.password&quot;</span>,CodeUtils.decode(password));</span><br><span class="line">inputStream = Resource.getResourceAsStream(resource);</span><br><span class="line">sqlSessionFactory = <span class="keyword">new</span> SqlSessionFactoryBuilder().build(inputStream,props);</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p><settings/>深刻影响mybatis底层运行</p>
-<p>比如cacheEnabled(默认true), lazyLoadingEnabled,(默认false), aggressiveLazyLoading(默认false), autoMappingBehavior(默认partial), mapUnderscoreToCamelCase(默认false)</p>
-</li>
-<li><p><typeAlias/>定义别名，在myBatis中用别名代替全限定名，别名不区分大小写，有一些自动初始化别名，包括8种基本类型及其包装类、String(别名string)、Date(date)等</p>
-<typeAlia alias="别名" type="全限定名">
-
-<p>或者直接扫描一个包下的多个类，其第一个字母改为小写作为别名</p>
-<p>或者在相应类上加@Alias(“别名”),防止重名导致失败</p>
-</li>
-<li><p><typeHandlers/>类型转换，可以自定义handler</p>
-<typeHandler jdbcType="VARCHAR" javaType="string" handler="handler的全限定名">
-
-<p>启用方式2种：</p>
-<ol>
-<li><p>有与handler一致的jdbcType和javaType</p>
-</li>
-<li><p>直接指定具体实现类（特别当返回为null无法断定采用哪个handler并没有注册时）</p>
-</li>
-<li><p>可以用包扫描方式加注解（@MappedTypes(String.class)@MappedjdbcTypes(jdbcType.VARCHAR)加在对应类上）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;typeHandlertype&gt;</span><br><span class="line">     		&lt;package name&#x3D;&quot;包全限定名&quot;&#x2F;&gt;</span><br><span class="line">&lt;&#x2F;typeHandlertype&gt;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-</li>
-<li><p><code>&lt;objectFactory/&gt;</code>对象工厂，默认使用已经实现好的DefaultObjectFactory，若自定义则一般通过继承DefaultObjectFactory改写实现</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;objectFactory type&#x3D;&quot;对象工厂自定义全限定类&quot;&gt;</span><br><span class="line">  		&lt;property name&#x3D;&quot;prop1&quot; value&#x3D;&quot;value1&quot;&gt;</span><br><span class="line">&lt;&#x2F;objectFactory&gt;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><code>&lt;plugins/&gt;</code>复杂灵活危险，覆盖底层对象的核心方法和属性</p>
-</li>
-<li><p><code>environments/&gt;</code>运行环境</p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;environments&gt;</span><br><span class="line">		&lt;environment&gt;描述数据库</span><br><span class="line">				&lt;!--配置事务管理器--&gt;</span><br><span class="line">				&lt;transactionManager type&#x3D;&quot;JDBC&quot;&gt;</span><br></pre></td></tr></table></figure>
-
-<p>​                    三种方式配置：JDBC、MANAGED、自定义</p>
-<ol>
-<li>使用JdbcTransactionFactory生成的JdbcTransaction对象，以JDBC方式操作</li>
-<li>使用ManagedTransactionFactory生成的ManagedTransaction对象，把事务交给容器处理</li>
-<li>自定义事务工厂，同样要继承TransactionFactory，并自定义事务实现类（实现Transaction接口）</li>
-</ol>
-<p>​                    <code>&lt;dataSource type=&quot;POOLED&quot;&gt;</code> 配置数据库</p>
-<p>​                    三种属性：</p>
-<p>​                    UNPOOLED：每次请求打开一个新的数据库连接，可配置driver,url,username,password,</p>
-<p>​                                                defaultTransactionIsolationLevel(默认事务隔离级别)</p>
-<p>​                    POOLED：包括UNPOOLE的配置参数，另外poolMaximumActiveConnections,</p>
-<p>​                                            poolMaximumIdleConnections,     poolMaximumCheckedoutTime,</p>
-<p>​                                            poolTimeTowait,       poolPingQuery,       poolPingEnabled,</p>
-<p>​                                            poolPingConnectionsNotUsedFor</p>
-<p>​                    JNDI：实现容器中使用，可以集中或在外部配置数据源，放置一个JNDI上下文引用</p>
-<p>​                                    initial_context：在InitialContext中寻找上下文</p>
-<p>​                                    data_source：引用数据源实例位置上下文的路径</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">				&lt;property name&#x3D;&quot;driver&quot; value&#x3D;&quot;$&#123;database.driver&#125;&quot;&#x2F;&gt;					</span><br><span class="line">			&lt;&#x2F;dataSource&gt;</span><br><span class="line">		&lt;&#x2F;environment&gt;</span><br><span class="line">&lt;&#x2F;environments&gt;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p><code>&lt;databaseIdProvider/&gt;</code><em>数据库厂商标识</em>可用property标签支持多种数据库</p>
-</li>
-<li><p><code>&lt;mappers/&gt;</code><em>引入映射文件</em></p>
-<p>引入方式4种：</p>
-<ul>
-<li>文件路径引入<code>&lt;mapper resource=&quot;XML文件全限定名&quot;&gt;</code></li>
-<li>包名引入<code>&lt;package name=&quot;包全限定名&quot;&gt;</code> 接口注入@Select(“select * from …”)</li>
-<li>类注册引入<code>&lt;mapper class=&quot;接口全限定名&quot;&gt;</code></li>
-<li>用url引入<code>&lt;mapper url=&quot;file:///var/mappers/XMl文件全限定名&quot;&gt;</code></li>
-</ul>
-</li>
-</ul>
+        <p>面试过程中遇到的Java相关基础知识整理。</p>
         
       
 
@@ -287,11 +205,22 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/09/16/mybatis/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/09/18/Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">展开全文 >></a>
         </p>
       
 
@@ -321,19 +250,244 @@
 
 
   
-    <article id="post-我的第一篇博客文章" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-设计模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/09/16/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/">我的第一篇博客文章</a>
+      <a class="article-title" href="/2020/09/18/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
     </h1>
   
 
         
-        <a href="/2020/09/16/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/" class="archive-article-date">
+        <a href="/2020/09/18/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" class="archive-article-date">
+  	<time datetime="2020-09-18T07:23:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-18</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>23种设计模式的基本概念、实现方法与比较。</p>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/09/18/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-计算机网络" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/09/18/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+    </h1>
+  
+
+        
+        <a href="/2020/09/18/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="archive-article-date">
+  	<time datetime="2020-09-18T07:22:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-18</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">计算机网络</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/09/18/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-MySQL" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/09/18/MySQL/">MySQL</a>
+    </h1>
+  
+
+        
+        <a href="/2020/09/18/MySQL/" class="archive-article-date">
+  	<time datetime="2020-09-18T07:07:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-18</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文梳理MySQL的相关知识、基本语法与性能优化。</p>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">MySQL</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/09/18/MySQL/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-mybatis" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/09/16/mybatis/">mybatis</a>
+    </h1>
+  
+
+        
+        <a href="/2020/09/16/mybatis/" class="archive-article-date">
   	<time datetime="2020-09-16T07:33:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-16</time>
 </a>
         
@@ -341,7 +495,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="第一节"><a href="#第一节" class="headerlink" title="第一节"></a>第一节</h2>
+        <p>MyBatis相关知识梳理。</p>
+<p>基础配置、各模块作用、创建步骤……</p>
+        
       
 
       
@@ -353,7 +509,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/09/16/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/09/16/mybatis/">展开全文 >></a>
         </p>
       
 
@@ -403,16 +559,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="windows和linux调度"><a href="#windows和linux调度" class="headerlink" title="windows和linux调度"></a>windows和linux调度</h1><h3 id="windows"><a href="#windows" class="headerlink" title="windows"></a>windows</h3><p>Windows操作系统的调度模块采用的是基于优先级的可抢占调度，保证了一定的实时性支持</p>
-<p>当一个线程变为就绪态时，或者有线程离开了运行态，再或者线程的优先级和处理器亲和性等发生了改变，都会触发分发器对线程的重新调度。</p>
-<p>Windows的‘剥夺式’调度中线程的调度与切换是分离的，新调度线程不会导致切换，否则中断返回现场不对</p>
-<p>Windows中进程、线程是<strong>层次结构</strong>，首先进程拥有一层调度优先级，然后同进程内的线程又拥有一层调度优先级</p>
-<p>Windows系统中的<strong>进程是不会被调度</strong>的，因为本身没有运行资源，必须依靠线程来运行。</p>
-<h3 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h3><p>Linux中的进程状态被存储在task_struct的state域中，用来标记当前进程描述符所表示的进程在操作系统中的存在状态</p>
-<p>Linux内核中的进程控制块task_struct，同时也是线程在使用的线程控制块，Linux的进程在创建之初就是一个可调度的单位</p>
-<p><strong>进程与进程之间保持很高的独立性</strong>，只有通过各种进程间通信的方式才能够相互交流</p>
-<p>Linux<strong>五种不同的进程状态</strong>，每个状态都表示了进程的一个特定的运行阶段：<br>1，<strong>TASK_RUNNING</strong>表示运行状态，表示当前进程是可执行的，即进程正在CPU上执行或者进程在运行队列中等待被调度运行。当进程正处于CPU上运行时，则进入该状态的正在运行阶段，当进程从CPU上切换下来但仍处于适合运行的状态时，则进入该状态的就绪阶段。一个进程无论是在用户空间执行还是内核空间执行，其state域中都是这个值。<br>2，<strong>TASK_INTERRUPTIBLE</strong>表示可中断睡眠状态，表示当前进程正在睡眠，由其命名可以看出，该状态可以被打断。所以它是一种可以被唤醒的睡眠状态，进程等待的条件达成，系统内核会用通知的方法把进程唤醒并设置为运行态。<br>3，<strong>TASK_UNINTERRUPTIBLE</strong>表示不可中断睡眠状态，表示进程正在睡眠且对信号等不做相应，这种状态一般只使用在进程的创建过程中。在进程的正常运行状态下，进程的睡眠等待都是有目的，因此该状态使用的比较少。<br>4，<strong>TASK_ZOMBIE</strong>表示僵尸状态，当前进程已经结束了其运行函数并且停止，但是其进程描述符还被保留在系统中以供其父进程获取。<br>5，<strong>TASK_STOPPED</strong>表示停止状态，此时进程处于不工作状态，不能被调度运行。该状态是进程接收到SIGSTOP、SIGTSTP、SIGTTIN、SIGTTOU等信号时进入的状态</p>
-<h1 id="多线程共享什么数据"><a href="#多线程共享什么数据" class="headerlink" title="多线程共享什么数据"></a>多线程共享什么数据</h1>
+        <p>在此记述操作系统相关知识，不断补充、修正。</p>
+<p>进程、线程、系统调度、linux常用命令……</p>
         
       
 
@@ -421,6 +569,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">操作系统</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -546,6 +705,26 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">MySQL</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">计算机网络</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">操作系统</a>
+              </li>
             
             <div class="clearfix"></div>
           </ul>

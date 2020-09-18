@@ -8,16 +8,17 @@
   <link rel="dns-prefetch" href="http://example.com">
   <title>操作系统特性 | 胡四毛的小BLOG</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="windows和linux调度windowsWindows操作系统的调度模块采用的是基于优先级的可抢占调度，保证了一定的实时性支持 当一个线程变为就绪态时，或者有线程离开了运行态，再或者线程的优先级和处理器亲和性等发生了改变，都会触发分发器对线程的重新调度。 Windows的‘剥夺式’调度中线程的调度与切换是分离的，新调度线程不会导致切换，否则中断返回现场不对 Windows中进程、线程是层次结构">
+  <meta name="description" content="在此记述操作系统相关知识，不断补充、修正。 进程、线程、系统调度、linux常用命令……">
 <meta property="og:type" content="article">
 <meta property="og:title" content="操作系统特性">
 <meta property="og:url" content="http://example.com/2020/09/16/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%80%BB%E7%BB%93/index.html">
 <meta property="og:site_name" content="胡四毛的小BLOG">
-<meta property="og:description" content="windows和linux调度windowsWindows操作系统的调度模块采用的是基于优先级的可抢占调度，保证了一定的实时性支持 当一个线程变为就绪态时，或者有线程离开了运行态，再或者线程的优先级和处理器亲和性等发生了改变，都会触发分发器对线程的重新调度。 Windows的‘剥夺式’调度中线程的调度与切换是分离的，新调度线程不会导致切换，否则中断返回现场不对 Windows中进程、线程是层次结构">
+<meta property="og:description" content="在此记述操作系统相关知识，不断补充、修正。 进程、线程、系统调度、linux常用命令……">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-09-16T07:33:12.000Z">
-<meta property="article:modified_time" content="2020-09-16T13:27:24.143Z">
+<meta property="article:modified_time" content="2020-09-18T07:01:03.537Z">
 <meta property="article:author" content="胡四毛">
+<meta property="article:tag" content="操作系统">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="胡四毛的小BLOG" type="application/atom+xml">
@@ -198,7 +199,11 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="windows和linux调度"><a href="#windows和linux调度" class="headerlink" title="windows和linux调度"></a>windows和linux调度</h1><h3 id="windows"><a href="#windows" class="headerlink" title="windows"></a>windows</h3><p>Windows操作系统的调度模块采用的是基于优先级的可抢占调度，保证了一定的实时性支持</p>
+        <p>在此记述操作系统相关知识，不断补充、修正。</p>
+<p>进程、线程、系统调度、linux常用命令……</p>
+<a id="more"></a>
+
+<h1 id="windows和linux调度"><a href="#windows和linux调度" class="headerlink" title="windows和linux调度"></a>windows和linux调度</h1><h3 id="windows"><a href="#windows" class="headerlink" title="windows"></a>windows</h3><p>Windows操作系统的调度模块采用的是基于优先级的可抢占调度，保证了一定的实时性支持</p>
 <p>当一个线程变为就绪态时，或者有线程离开了运行态，再或者线程的优先级和处理器亲和性等发生了改变，都会触发分发器对线程的重新调度。</p>
 <p>Windows的‘剥夺式’调度中线程的调度与切换是分离的，新调度线程不会导致切换，否则中断返回现场不对</p>
 <p>Windows中进程、线程是<strong>层次结构</strong>，首先进程拥有一层调度优先级，然后同进程内的线程又拥有一层调度优先级</p>
@@ -207,9 +212,7 @@
 <p>Linux内核中的进程控制块task_struct，同时也是线程在使用的线程控制块，Linux的进程在创建之初就是一个可调度的单位</p>
 <p><strong>进程与进程之间保持很高的独立性</strong>，只有通过各种进程间通信的方式才能够相互交流</p>
 <p>Linux<strong>五种不同的进程状态</strong>，每个状态都表示了进程的一个特定的运行阶段：<br>1，<strong>TASK_RUNNING</strong>表示运行状态，表示当前进程是可执行的，即进程正在CPU上执行或者进程在运行队列中等待被调度运行。当进程正处于CPU上运行时，则进入该状态的正在运行阶段，当进程从CPU上切换下来但仍处于适合运行的状态时，则进入该状态的就绪阶段。一个进程无论是在用户空间执行还是内核空间执行，其state域中都是这个值。<br>2，<strong>TASK_INTERRUPTIBLE</strong>表示可中断睡眠状态，表示当前进程正在睡眠，由其命名可以看出，该状态可以被打断。所以它是一种可以被唤醒的睡眠状态，进程等待的条件达成，系统内核会用通知的方法把进程唤醒并设置为运行态。<br>3，<strong>TASK_UNINTERRUPTIBLE</strong>表示不可中断睡眠状态，表示进程正在睡眠且对信号等不做相应，这种状态一般只使用在进程的创建过程中。在进程的正常运行状态下，进程的睡眠等待都是有目的，因此该状态使用的比较少。<br>4，<strong>TASK_ZOMBIE</strong>表示僵尸状态，当前进程已经结束了其运行函数并且停止，但是其进程描述符还被保留在系统中以供其父进程获取。<br>5，<strong>TASK_STOPPED</strong>表示停止状态，此时进程处于不工作状态，不能被调度运行。该状态是进程接收到SIGSTOP、SIGTSTP、SIGTTIN、SIGTTOU等信号时进入的状态</p>
-<h1 id="多线程共享什么数据"><a href="#多线程共享什么数据" class="headerlink" title="多线程共享什么数据"></a>多线程共享什么数据</h1><a id="more"></a>
-
-<ul>
+<h1 id="多线程共享什么数据"><a href="#多线程共享什么数据" class="headerlink" title="多线程共享什么数据"></a>多线程共享什么数据</h1><ul>
 <li>进程代码段</li>
 <li>进程的公有数据</li>
 <li>进程打开的文件描述符</li>
@@ -714,6 +717,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">操作系统</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -778,11 +792,11 @@
   
 <nav id="article-nav">
   
-    <a href="/2020/09/16/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2020/09/16/mybatis/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          我的第一篇博客文章
+          mybatis
         
       </div>
     </a>
@@ -921,6 +935,26 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">MySQL</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">计算机网络</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">操作系统</a>
+              </li>
             
             <div class="clearfix"></div>
           </ul>

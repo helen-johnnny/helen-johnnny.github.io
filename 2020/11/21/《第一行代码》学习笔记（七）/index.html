@@ -6,14 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Tag: android | 胡四毛的小BLOG</title>
+  <title>《第一行代码》学习笔记（七） | 胡四毛的小BLOG</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="胡四毛的小BLOG">
-<meta property="og:url" content="http://example.com/tags/android/index.html">
+  <meta name="description" content="《第一行代码》android入门，第七章学习笔记。 内容提供器主要用于不同的应用程序之间实现数据共享的功能，能够选择共享的数据内容，从而保证数据的安全性。 本章对内容提供器进行学习。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《第一行代码》学习笔记（七）">
+<meta property="og:url" content="http://example.com/2020/11/21/%E3%80%8A%E7%AC%AC%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89/index.html">
 <meta property="og:site_name" content="胡四毛的小BLOG">
+<meta property="og:description" content="《第一行代码》android入门，第七章学习笔记。 内容提供器主要用于不同的应用程序之间实现数据共享的功能，能够选择共享的数据内容，从而保证数据的安全性。 本章对内容提供器进行学习。">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-11-21T04:34:00.000Z">
+<meta property="article:modified_time" content="2020-11-26T08:03:43.866Z">
 <meta property="article:author" content="胡四毛">
+<meta property="article:tag" content="android">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="胡四毛的小BLOG" type="application/atom+xml">
@@ -180,36 +185,254 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-《第一行代码》学习笔记（七）" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      《第一行代码》学习笔记（七）
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/11/21/%E3%80%8A%E7%AC%AC%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89/" class="archive-article-date">
+
+        
+        <a href="/2020/11/21/%E3%80%8A%E7%AC%AC%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89/" class="archive-article-date">
   	<time datetime="2020-11-21T04:34:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-21</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/11/21/%E3%80%8A%E7%AC%AC%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89/">《第一行代码》学习笔记（七）</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>《第一行代码》android入门，第七章学习笔记。</p>
+<p>内容提供器主要用于不同的应用程序之间实现数据共享的功能，能够选择共享的数据内容，从而保证数据的安全性。</p>
+<p>本章对内容提供器进行学习。</p>
+<a id="more"></a>
 
-        <div class="article-info info-on-right">
-          
+<h1 id="运行时权限"><a href="#运行时权限" class="headerlink" title="运行时权限"></a>运行时权限</h1><p>权限机制是学习内容提供器之前的基础知识，在开发中会经常使用。</p>
+<p>Android权限分为两类：一类是普通权限（系统自动授权），一类是危险权限（需要用户手动授权）</p>
+<p>Android中的所有<strong>危险权限</strong>：</p>
+<ul>
+<li>CALENDAR<ul>
+<li>READ_CALENDAR</li>
+<li>WRITE_CALENDAR</li>
+</ul>
+</li>
+<li>CAMERA<ul>
+<li>CAMERA</li>
+</ul>
+</li>
+<li>CONTACTS<ul>
+<li>READ_CONTACTS</li>
+<li>WRITE_CONTACTS</li>
+<li>GET_CONTACTS</li>
+</ul>
+</li>
+<li>MICROPHONE<ul>
+<li>RECORD_AUDIO</li>
+</ul>
+</li>
+<li>PHONE<ul>
+<li>READ_PHONE_STATE</li>
+<li>CALL_PHONE</li>
+<li>READ_CALL_LOG</li>
+<li>WRITE_CALL_LOG</li>
+<li>ADD_VOICEMAIL</li>
+<li>USE_SIP</li>
+<li>PROCESS_OUTGOING_CALLS</li>
+</ul>
+</li>
+<li>SENSORS<ul>
+<li>BODY_SENSORS</li>
+</ul>
+</li>
+<li>SMS<ul>
+<li>SEND_SMS</li>
+<li>RECEIVE_SMS</li>
+<li>READ_SMS</li>
+<li>RECEIVE_WAP_PUSH</li>
+<li>RECEIVE_MMS</li>
+</ul>
+</li>
+<li>STORAGE<ul>
+<li>READ_EXTERNAL_STORAGE</li>
+<li>WRITE_EXTERNAL_STORAGE</li>
+</ul>
+</li>
+</ul>
+<p>普通权限只需要在AndroidManifest.xml文件中添加以下权限声明就可以</p>
+<p>示例：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">&quot;android.permission.ACCESS_NETWORK_STATE&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>危险权限则需要在程序运行时候申请权限</strong></p>
+<h2 id="运行时权限申请"><a href="#运行时权限申请" class="headerlink" title="运行时权限申请"></a>运行时权限申请</h2><ul>
+<li>首先，调用ContextCompat.checkSelfPermisshion()方法判断是否用户已经授权</li>
+</ul>
+<p>ContextCompat.checkSelfPermisshion(被授权对象,具体权限名)</p>
+<ul>
+<li>如果没有授权，则调用requestPermissions()方法请求授权</li>
+</ul>
+<p>requestPermissions(Activity实例，String数组（申请的权限名），请求码)</p>
+<p>示例代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(ContextCompat.checkSelfPermission(MainActivity.<span class="keyword">this</span>,Manifest.permission.CALL_PHONE)!=PackageManager.PERMISSION_GRANTED)&#123;</span><br><span class="line">    ActivityCompat.requestPermission(MainActivity.<span class="keyword">this</span>,<span class="keyword">new</span> String[]&#123;Manifest.permission.CALL_PHONE&#125;,<span class="number">1</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    call();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>调用授权方法后，系统弹出权限申请的对话框，用户点击选择同意或拒绝，无论结果如何都会回调onRequestPermissionResult()方法</p>
+<p>onRequestPermissionResult(请求码，申请的权限名数组，grantResults结果数组)</p>
+<p>用户授权的结果会封装在grantResults参数中，根据授权结果执行相应的逻辑</p>
+<p>示例代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onRequestPermissionResult</span><span class="params">(<span class="keyword">int</span> requestCode,String[] permissions,<span class="keyword">int</span>[] grantResults)</span></span>&#123;</span><br><span class="line">    <span class="keyword">switch</span>(requestCode)&#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">if</span>(grantResults.length &gt; <span class="number">0</span> &amp;&amp; grantResults[<span class="number">0</span>] == PackageManager.PERMISSTION_GRANTED)&#123;</span><br><span class="line">                call();</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                Toast.makeText(<span class="keyword">this</span>,<span class="string">&quot;You denied the permission&quot;</span>,Toast.LENGTH_SHORT).show();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h1 id="内容提供器使用"><a href="#内容提供器使用" class="headerlink" title="内容提供器使用"></a>内容提供器使用</h1><p>用法一般有两种：</p>
+<ul>
+<li><p>使用现有的内容提供器来读取和操作相应程序中的数据</p>
+</li>
+<li><p>创建自己的内容提供器给自己程序的数据提供外部访问接口</p>
+</li>
+</ul>
+<h2 id="ContentResolver"><a href="#ContentResolver" class="headerlink" title="ContentResolver"></a>ContentResolver</h2><p>应用程序向访问内容提供器中共享的数据，需要借助ContentResolver类。</p>
+<p>首先，通过Context中的getContentResolver()方法获取到该类的实例；</p>
+<p>再对实例调用相关方法进行CRUD操作：insert(),update(),delete(),query()</p>
+<p>这几个方法与SQLiteDatabase中方法相似，<strong>但是方法参数不同</strong></p>
+<p>ContentResolver的CRUD方法接收Uri参数（唯一标识符）</p>
+<h3 id="Uri"><a href="#Uri" class="headerlink" title="Uri"></a>Uri</h3><p>Uri表示方法：<code>协议声明：//Authority+path</code></p>
+<ul>
+<li>authority：对不同的应用程序做区分，一般采用程序包名的方式</li>
+<li>path：用于同一程序中不同的表做区分</li>
+</ul>
+<p>两种方式：</p>
+<ul>
+<li><p>content://com.example.app.provider/table1</p>
+</li>
+<li><p>content://com.example.app.provider/table1/1         在标准的uri后加一个id，表示调用方期望访问的是这个表中id为1的数据</p>
+</li>
+</ul>
+<p>也可以用<strong>通配符</strong>的方式来分别匹配两种Uri格式</p>
+<ul>
+<li>content://com.example.app.provider/*          *号匹配任意长度的任意字符</li>
+<li>content://com.example.app.provider/table1/#             #号匹配任意长度的数字</li>
+</ul>
+<p>另外，还有一个<strong>UriMatcher类</strong>可以用于匹配内容Uri</p>
+<h4 id="UriMatcher"><a href="#UriMatcher" class="headerlink" title="UriMatcher"></a>UriMatcher</h4><ul>
+<li>addURI()方法，接收3个参数：<ul>
+<li>authority</li>
+<li>path</li>
+<li>自定义代码</li>
+</ul>
+</li>
+<li>match()方法，传入Uri对象，返回某个能够匹配这个Uri对象的自定义代码</li>
+</ul>
+<p>代码示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyProvider</span> <span class="keyword">extends</span> <span class="title">ContentProvider</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TABLE1_DIR = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TABLE1_ITEM = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TABLE2_DIR = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TABLE2_ITEM = <span class="number">3</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> UriMatcher uriMatcher;</span><br><span class="line">    <span class="keyword">static</span>&#123;</span><br><span class="line">        uriMatcher = <span class="keyword">new</span> UriMatcher(UriMatcher.NO_MATCH);</span><br><span class="line">        uriMatcher.addURI(<span class="string">&quot;com.example.app.provider&quot;</span>,<span class="string">&quot;table1&quot;</span>,TABLE1_DIR);</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Cursor <span class="title">query</span><span class="params">(Uri uri,String[] projection,String selection,String[] selectionArgs, String sortOder)</span></span>&#123;</span><br><span class="line">        <span class="keyword">switch</span>(uriMatcher.match(uri))&#123;</span><br><span class="line">            <span class="keyword">case</span> TABLE1_DIR:</span><br><span class="line">                <span class="comment">//查询table1表中的所有数据</span></span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> TABLE1_ITEM:</span><br><span class="line">                <span class="comment">//查询table1中的单条数据</span></span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> TABLE2_DIR:</span><br><span class="line">                <span class="comment">//查询table2中的所有数据</span></span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> TABLE2_ITEM:</span><br><span class="line">                <span class="comment">//查询table2中的单条数据</span></span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="CRUD操作"><a href="#CRUD操作" class="headerlink" title="CRUD操作"></a>CRUD操作</h3><p><strong>查询代码示例</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//先将字符串解析成一个Uri对象</span></span><br><span class="line">Uri uri = Uri.parse(<span class="string">&quot;content://com.example.app.provider/table1&quot;</span>);</span><br><span class="line">Cursor cursor = getContentResolver().query(</span><br><span class="line">	uri, <span class="comment">//指定查询某个应用程序下的某一张表</span></span><br><span class="line">    projection, <span class="comment">//指定查询的列名</span></span><br><span class="line">    selection, <span class="comment">//指定where的约束条件</span></span><br><span class="line">    selectionArgs, <span class="comment">//指定whered中的占位符具体的值</span></span><br><span class="line">    sortOder); <span class="comment">//指定查询结果的排序方式</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//得到结果后从Cursor对象中逐个读取数据</span></span><br><span class="line"><span class="keyword">if</span>(cursor!=<span class="keyword">null</span>)&#123;</span><br><span class="line">    <span class="keyword">while</span>(cursor.moveToNext())&#123;</span><br><span class="line">        String column1 = cursor.getString(cursor.getColumnIndex(<span class="string">&quot;column1&quot;</span>));</span><br><span class="line">        <span class="keyword">int</span> column2 = cursor.getInt(cursor.getColumnIndex(<span class="string">&quot;column2&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    cursor.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>添加数据代码示例</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Uri uri = Uri.parse(<span class="string">&quot;content://com.example.app.provider/table1&quot;</span>);</span><br><span class="line">ContentValues values = <span class="keyword">new</span> ContentValues();</span><br><span class="line">values.put(<span class="string">&quot;column1&quot;</span>,<span class="string">&quot;text&quot;</span>);</span><br><span class="line">calues.put(<span class="string">&quot;column2&quot;</span>,<span class="string">&quot;1&quot;</span>);</span><br><span class="line">getContentResolver().insert(uri,values);</span><br></pre></td></tr></table></figure>
+
+<p><strong>修改数据代码示例</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Uri uri = Uri.parse(<span class="string">&quot;content://com.example.app.provider/table1&quot;</span>);</span><br><span class="line">ContentValues values = <span class="keyword">new</span> ContentValues();</span><br><span class="line">values.put(<span class="string">&quot;column1&quot;</span>,<span class="string">&quot;&quot;</span>);</span><br><span class="line">getContentResolver().update(uri,values,<span class="string">&quot;column1 = ? and column2 = ?&quot;</span>,<span class="keyword">new</span> String[]&#123;<span class="string">&quot;text&quot;</span>,<span class="string">&quot;1&quot;</span>&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>删除代码示例</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Uri uri = Uri.parse(<span class="string">&quot;content://com.example.app.provider/table1&quot;</span>);</span><br><span class="line">getContentResolver(uri,<span class="string">&quot;column2 = ?&quot;</span>,<span class="keyword">new</span> String[]&#123;<span class="string">&quot;1&quot;</span>&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建内容提供器"><a href="#创建内容提供器" class="headerlink" title="创建内容提供器"></a>创建内容提供器</h2><p>步骤：新建一个类继承ContentProvider</p>
+<p>ContentProvider中具有6个抽象方法，继承时需全部重写</p>
+<p>6个抽象方法：</p>
+<ul>
+<li><p>onCreate() //初始化内容提供器，通常在这里完成对数据库的创建和升级等操作，返回的是boolean</p>
+</li>
+<li><p>query() //查询数据，返回Cursor对象</p>
+</li>
+<li><p>insert() //添加一条数据，返回一个用于表示这条新记录的Uri</p>
+</li>
+<li><p>update()  //更新内容提供器已有的数据，返回受影响的行数</p>
+</li>
+<li><p>delete() //删除数据，返回被删除的行数</p>
+</li>
+<li><p>getType() //根据传入的内容Uri来返回相应的MIME类型</p>
+<ul>
+<li><p>一个内容URI所对应的MIME字符串主要由3部分组成：</p>
+<ul>
+<li>必须以vnd开头</li>
+<li>如果内容URI以路径结尾，后接android.cursor.dir/ ；如果内容URI以id结尾，后接android.cursor.item/</li>
+<li>最后接上<code>vnd.&lt;authority&gt;.&lt;path&gt;</code></li>
+</ul>
+</li>
+<li><p>示例：</p>
+<p>对于content://com.example.app.provider/table1这个uri，对应的MIME类型为</p>
+<p><code>vnd.android.corsur.dir/vnd.com.example.app.provider.table1</code></p>
+</li>
+</ul>
+</li>
+</ul>
+<p>注意：内容提供器必须要在AndroidManifest.xml文件中注册才可以使用，使用Android Studio快捷方式创建的内容提供器会自动注册</p>
+<p>代码示例;</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">application</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:allowBackup</span>=<span class="string">&quot;true&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:icon</span>=<span class="string">&quot;@mipmap/ic_launcher&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:label</span>=<span class="string">&quot;@string/app_name&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:supportsRtl</span>=<span class="string">&quot;true&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:theme</span>=<span class="string">&quot;@style/AppTheme&quot;</span>&gt;</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="tag">&lt;<span class="name">provider</span></span></span><br><span class="line"><span class="tag">              <span class="attr">android:name</span>=<span class="string">&quot;.DatabaseProvider&quot;</span></span></span><br><span class="line"><span class="tag">              <span class="attr">android:authorities</span>=<span class="string">&quot;com.example.databsetest.provider&quot;</span></span></span><br><span class="line"><span class="tag">              <span class="attr">android:enabled</span>=<span class="string">&quot;true&quot;</span></span></span><br><span class="line"><span class="tag">              <span class="attr">android:exported</span>=<span class="string">&quot;true&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">provider</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">application</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
+<li><p>Android权限机制</p>
+<ul>
+<li>普通权限：在AndroidManifest.xml文件中声明，系统自动授权</li>
+<li>危险权限：运行时申请，调用requestPermissions()方法</li>
+</ul>
+</li>
+<li><p>内容提供器：允许跨应用传递数据</p>
+<p>用法两种：</p>
+<ul>
+<li>使用现有的内容提供器ContentSolver来读取和操作相应程序中的数据</li>
+<li>创建自己的内容提供器给自己程序的数据提供外部访问接口</li>
+</ul>
+</li>
+<li><p>Uri唯一标识符，传给内容提供器用于指定数据操作的位置</p>
+<p>表示方法：authority+path，两种写法：</p>
+<ul>
+<li><p>content://com.example.app.provider/table_name</p>
+</li>
+<li><p>content://com.example.app.provider/table_name/id</p>
+<p>可以使用“*”，”#“和UriMatcher进行匹配</p>
+</li>
+</ul>
+</li>
+<li><p>CRUD操作：通过query()，insert() ，update()  ，delete() 方法，与SQLite类似，但是传入的是Uri</p>
+</li>
+<li><p>创建自己的内容提供器，需重写6个抽象方法：</p>
+<p>onCreate()，query()，insert() ，update()  ，delete()，<strong>getType()</strong></p>
+</li>
+</ul>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -221,209 +444,119 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2020/11/21/%E3%80%8A%E7%AC%AC%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%83%EF%BC%89/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/11/19/%E3%80%8A%E7%AC%AC%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89/" class="archive-article-date">
-  	<time datetime="2020-11-19T05:41:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-19</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2020/11/19/%E3%80%8A%E7%AC%AC%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">《第一行代码》学习笔记（六）</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/11/19/%E3%80%8A%E7%AC%AC%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%85%AD%EF%BC%89/">《第一行代码》学习笔记（六）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">android</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E6%97%B6%E6%9D%83%E9%99%90"><span class="toc-number">1.</span> <span class="toc-text">运行时权限</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E6%97%B6%E6%9D%83%E9%99%90%E7%94%B3%E8%AF%B7"><span class="toc-number">1.1.</span> <span class="toc-text">运行时权限申请</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%86%85%E5%AE%B9%E6%8F%90%E4%BE%9B%E5%99%A8%E4%BD%BF%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">内容提供器使用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ContentResolver"><span class="toc-number">2.1.</span> <span class="toc-text">ContentResolver</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Uri"><span class="toc-number">2.1.1.</span> <span class="toc-text">Uri</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#UriMatcher"><span class="toc-number">2.1.1.1.</span> <span class="toc-text">UriMatcher</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CRUD%E6%93%8D%E4%BD%9C"><span class="toc-number">2.1.2.</span> <span class="toc-text">CRUD操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%86%85%E5%AE%B9%E6%8F%90%E4%BE%9B%E5%99%A8"><span class="toc-number">2.2.</span> <span class="toc-text">创建内容提供器</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+        
+    </div>
+</aside>
+
+
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/11/18/%E3%80%8A%E7%AC%AC%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89/" class="archive-article-date">
-  	<time datetime="2020-11-18T05:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-18</time>
-</a>
-        </div>
-    	 
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/11/18/%E3%80%8A%E7%AC%AC%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%94%EF%BC%89/">《第一行代码》学习笔记（五）</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">android</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/11/04/%E3%80%8A%E7%AC%AC%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89/" class="archive-article-date">
-  	<time datetime="2020-11-04T08:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-04</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/11/04/%E3%80%8A%E7%AC%AC%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E5%9B%9B%EF%BC%89/">《第一行代码》学习笔记（四）</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">android</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/26/%E3%80%8A%E7%AC%AC%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/" class="archive-article-date">
-  	<time datetime="2020-10-26T06:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-26</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/26/%E3%80%8A%E7%AC%AC%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/">《第一行代码》学习笔记（三）</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">android</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/09/28/%E3%80%8A%E7%AC%AC%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/" class="archive-article-date">
-  	<time datetime="2020-09-28T05:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-28</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/09/28/%E3%80%8A%E7%AC%AC%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/">《第一行代码》学习笔记（二）</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">android</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
 
 
           </div>
@@ -446,9 +579,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,

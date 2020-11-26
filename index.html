@@ -646,161 +646,26 @@
     <article id="post-《第一行代码》学习笔记（一）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/09/27/%E3%80%8A%E7%AC%AC%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/">《第一行代码》学习笔记（一）</a>
+    </h1>
+  
+
+        
+        <a href="/2020/09/27/%E3%80%8A%E7%AC%AC%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%80%EF%BC%89/" class="archive-article-date">
+  	<time datetime="2020-09-27T05:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-27</time>
+</a>
+        
+      </header>
+    
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="《第一行代码》学习笔记（一）"><a href="#《第一行代码》学习笔记（一）" class="headerlink" title="《第一行代码》学习笔记（一）"></a>《第一行代码》学习笔记（一）</h1><p>android：移动操作系统</p>
-<h2 id="android系统架构"><a href="#android系统架构" class="headerlink" title="android系统架构"></a>android系统架构</h2><p>四层架构：Linux内核层、系统运行库层、应用框架层、应用层</p>
-<ul>
-<li>Linux内核层（Linux Kernel）：为设备硬件提供底层驱动，例如：显示驱动、音频驱动、照相机驱动、蓝牙驱动、WIFI驱动、电源管理</li>
-<li>系统运行库层（Libraries）：<ul>
-<li>C/C++库提供主要特性支持，SQLite提供数据库支持，OpenGL/ES库提供3D绘图支持，Webkit库提供浏览器内核支持等</li>
-<li>android运行时库，提供一些核心库，允许开发者使用Java语言编写android应用</li>
-<li>Dalvik虚拟机（ART运行环境），使得每个anroid应用能运行在独立的进程中，针对手机内存、CPU性能有限的情况进行优化处理</li>
-</ul>
-</li>
-<li>应用框架层（Application Framework）：提供构建应用程序时可能用到的各种API</li>
-<li>应用层（Applications）：所有安装在移动设备上的应用程序</li>
-</ul>
-<h2 id="四大组件"><a href="#四大组件" class="headerlink" title="四大组件"></a>四大组件</h2><p>活动（Activity）、服务（Service）、广播接收器（Broadcast Receiver）、内容提供器（Content Provider）</p>
-<p>Acitivity：Android应用程序的门面，应用中所有看到的东西都放在活动中</p>
-<p>Service：在后台运行</p>
-<p>Broadcast Receiver：允许应用接收来自各处的广播消息，也可以向外发出广播消息</p>
-<p>Content Provider：提供应用程序之间的共享数据</p>
-<h2 id="基本项目结构"><a href="#基本项目结构" class="headerlink" title="基本项目结构"></a>基本项目结构</h2><ol>
-<li>.gradle和.idea    Android Studio自动生成的文件</li>
-<li><strong>app 项目中的代码、资源</strong></li>
-<li>build 编译时自动生成的文件</li>
-<li>gradle 包含gradle wrapper的配置文件</li>
-<li>.gitignore 将指定的目录或文件排除在版本控制之外</li>
-<li>build.gradle 全局的gradle构建脚本</li>
-<li>gradle.properties gradle配置文件</li>
-<li>gradlew和gradlew.bat 用来在命令行界面中执行gradle命令，gradlew在linux和mac系统中使用，gradlew.bat在windows中使用</li>
-<li>HelloWorld.iml 标志这是idea的项目</li>
-<li>local.properties 指定本机中的android SDK路径</li>
-<li>settings.gradle 指定项目中所有引入的模块</li>
-</ol>
-<p>以上除了app目录，其他都是自动生成的，无需修改。</p>
-<h3 id="app目录详解"><a href="#app目录详解" class="headerlink" title="app目录详解"></a>app目录详解</h3><ul>
-<li>build 编译时自动生成的文件</li>
-<li>libs 第三方jar包，该目录下的jar包会被自动添加到构建路径里去</li>
-<li>androidTest 编写AndroidTest测试用例，以便进行自动化测试</li>
-<li>java 存放所有java代码</li>
-<li>res 项目中使用的所有图片、布局、字符串等资源存放的目录</li>
-<li>AndroidManifest.iml 整个项目的配置文件，四大组件都需要在这个文件里注册，也可以在该文件中给应用程序添加权限声明</li>
-<li>test 编写单元测试用例</li>
-<li>.gitignore 将app模块内的指定的目录或文件排除在版本控制之外</li>
-<li>app.iml idea自动生成的文件</li>
-<li>build.gradle app模块的gradle构建脚本</li>
-<li>proguard-rules.pro 指定代码混淆规则，防止打包后代码被别人破解</li>
-</ul>
-<h2 id="项目如何运行起来"><a href="#项目如何运行起来" class="headerlink" title="项目如何运行起来"></a>项目如何运行起来</h2><ol>
-<li><strong>先看AndroidManifest.xml中的部分代码</strong></li>
-</ol>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> <span class="tag">&lt;<span class="name">activity</span>  <span class="attr">android:name</span>=<span class="string">&quot;.FullscreenActivity&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:configChanges</span>=<span class="string">&quot;orientation|keyboardHidden|screenSize&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:label</span>=<span class="string">&quot;@string/app_name&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:theme</span>=<span class="string">&quot;@style/FullscreenTheme&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">&quot;android.intent.action.MAIN&quot;</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">&quot;android.intent.category.LAUNCHER&quot;</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>在AndroidManifest中注册FullscreenActivity这个活动，</p>
-<p><code>&lt;intent-filter&gt;</code>中的两行代码表示该项目的主活动，手机上点击应用图标首先启动的就是这个活动</p>
-<ol start="2">
-<li><strong>再看FullscreenActivity中的代码</strong></li>
-</ol>
-<p><code>public class FullscreenActivity extends AppCompatActivity&#123;</code></p>
-<p>表明 FullscreenActivity 继承自 AppCompatActivity（向下兼容的Activity活动基类，Activity的子类）</p>
-<p>其中重写了一个onCreate()方法，这是一个活动被创建时必定要执行的方法</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line"></span><br><span class="line">    setContentView(R.layout.activity_fullscreen);</span><br><span class="line"></span><br><span class="line">    mVisible = <span class="keyword">true</span>;</span><br><span class="line">    mControlsView = findViewById(R.id.fullscreen_content_controls);</span><br><span class="line">    mContentView = findViewById(R.id.fullscreen_content);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Set up the user interaction to manually show or hide the system UI.</span></span><br><span class="line">    mContentView.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View view)</span> </span>&#123;</span><br><span class="line">            toggle();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Upon interacting with UI controls, delay any scheduled hide()</span></span><br><span class="line">    <span class="comment">// operations to prevent the jarring behavior of controls going away</span></span><br><span class="line">    <span class="comment">// while interacting with the UI.</span></span><br><span class="line">    findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>方法体内第二行调用了 setContentView() 方法，引入 activity_fullscreen 布局</p>
-<ol start="3">
-<li><strong>然后看activity_fullscreen.xml</strong></li>
-</ol>
-<p>其中有一个TextView，这是Android系统提供的一个控件，在布局中显示文字</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">TextView</span></span></span><br><span class="line"><span class="tag">       <span class="attr">android:id</span>=<span class="string">&quot;@+id/fullscreen_content&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">android:layout_width</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">android:layout_height</span>=<span class="string">&quot;match_parent&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">android:gravity</span>=<span class="string">&quot;center&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">android:keepScreenOn</span>=<span class="string">&quot;true&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">android:text</span>=<span class="string">&quot;Hello World!&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">android:textColor</span>=<span class="string">&quot;#33b5e5&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">android:textSize</span>=<span class="string">&quot;50sp&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">android:textStyle</span>=<span class="string">&quot;bold&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>至此<strong>显示第一行代码的原理</strong>分析完毕。</p>
-<h2 id="项目资源及其引用"><a href="#项目资源及其引用" class="headerlink" title="项目资源及其引用"></a>项目资源及其引用</h2><p>res是项目的资源文件夹，主要包括drawable、mipmap、values、layout开头的目录。</p>
-<ul>
-<li>drawable开头用来放图片</li>
-<li>mipmap开头放应用图标</li>
-<li>values开头用来放字符串、样式、颜色等配置</li>
-<li>layout文件夹用来放布局文件。</li>
-</ul>
-<p>例如，打开values/string.xml文件，内容包括：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">resources</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span> <span class="attr">name</span>=<span class="string">&quot;app_name&quot;</span>&gt;</span>HelloWorld<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span> <span class="attr">name</span>=<span class="string">&quot;dummy_button&quot;</span>&gt;</span>Dummy Button<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span> <span class="attr">name</span>=<span class="string">&quot;dummy_content&quot;</span>&gt;</span>DUMMY\nCONTENT<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resources</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>对字符串的引用方式有两种：</p>
-<ul>
-<li>在代码中通过<code>R.string.dummy_content</code>获得该字符串的引用</li>
-<li>在xml中通过<code>@string/dummmy_content</code>获得该字符串的引用</li>
-</ul>
-<p>相应的，对图片资源的引用就可以把<strong>string</strong>替换成<strong>drawable</strong>，对应用图标的引用就可以替换成<strong>mipmap</strong>，对布局文件的引用就可以替换成<strong>layout</strong></p>
-<h2 id="build-gradle文件详解"><a href="#build-gradle文件详解" class="headerlink" title="build.gradle文件详解"></a>build.gradle文件详解</h2><p>Android Studio通过Gradle构建项目，Gradle是一种基于Groovy的领域特定语言来声明项目设置，基于XML的繁琐配置</p>
-<p>在项目中出现了<strong>两个build.gradle文件</strong>，分别在最外层目录下和app目录下。</p>
-<h3 id="最外层目录下的build-gradle文件"><a href="#最外层目录下的build-gradle文件" class="headerlink" title="最外层目录下的build.gradle文件"></a>最外层目录下的build.gradle文件</h3><p>先看代码</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">buildscript &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        google()</span><br><span class="line">        jcenter()</span><br><span class="line">    &#125;</span><br><span class="line">    dependencies &#123;</span><br><span class="line">        classpath <span class="string">&quot;com.android.tools.build:gradle:4.0.1&quot;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// <span class="doctag">NOTE:</span> Do not place your application dependencies here; they belong</span></span><br><span class="line">        <span class="comment">// in the individual module build.gradle files</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">allprojects &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        google()</span><br><span class="line">        jcenter()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">task clean(<span class="attr">type:</span> Delete) &#123;</span><br><span class="line">    delete rootProject.buildDir</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>两处repositories的闭包中都声明了jcenter()这行配置，这是一个代码托管仓库，使得我们可以在项目中引用任何jcenter上的开源项目</p>
-<p>dependencies闭包中使用classpath声明了一个Gradle插件，表明这是用来构建android项目的</p>
-<h3 id="app目录下的build-gradle文件"><a href="#app目录下的build-gradle文件" class="headerlink" title="app目录下的build.gradle文件"></a>app目录下的build.gradle文件</h3><p>继续先看代码</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">apply <span class="attr">plugin:</span> <span class="string">&#x27;com.android.application&#x27;</span></span><br><span class="line"></span><br><span class="line">android &#123;</span><br><span class="line">    compileSdkVersion <span class="number">30</span></span><br><span class="line">    buildToolsVersion <span class="string">&quot;30.0.2&quot;</span></span><br><span class="line"></span><br><span class="line">    defaultConfig &#123;</span><br><span class="line">        applicationId <span class="string">&quot;helen.com.helloworld&quot;</span></span><br><span class="line">        minSdkVersion <span class="number">15</span></span><br><span class="line">        targetSdkVersion <span class="number">30</span></span><br><span class="line">        versionCode <span class="number">1</span></span><br><span class="line">        versionName <span class="string">&quot;1.0&quot;</span></span><br><span class="line"></span><br><span class="line">        testInstrumentationRunner <span class="string">&quot;androidx.test.runner.AndroidJUnitRunner&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    buildTypes &#123;</span><br><span class="line">        release &#123;</span><br><span class="line">            minifyEnabled <span class="literal">false</span></span><br><span class="line">            proguardFiles getDefaultProguardFile(<span class="string">&#x27;proguard-android-optimize.txt&#x27;</span>), <span class="string">&#x27;proguard-rules.pro&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">dependencies &#123;</span><br><span class="line">    implementation fileTree(<span class="attr">dir:</span> <span class="string">&quot;libs&quot;</span>, <span class="attr">include:</span> [<span class="string">&quot;*.jar&quot;</span>])</span><br><span class="line">    implementation <span class="string">&#x27;androidx.appcompat:appcompat:1.1.0&#x27;</span></span><br><span class="line">    implementation <span class="string">&#x27;androidx.legacy:legacy-support-v4:1.0.0&#x27;</span></span><br><span class="line">    testImplementation <span class="string">&#x27;junit:junit:4.12&#x27;</span></span><br><span class="line">    androidTestImplementation <span class="string">&#x27;androidx.test.ext:junit:1.1.1&#x27;</span></span><br><span class="line">    androidTestImplementation <span class="string">&#x27;androidx.test.espresso:espresso-core:3.2.0&#x27;</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>第一行引入插件：</p>
-<ul>
-<li>com.android.application表明这是一个应用程序模块；</li>
-<li>com.android.library表示这是一个库模块。</li>
-</ul>
-</li>
-<li><p>接下来的android闭包中为项目构建的各项配置属性</p>
-<ul>
-<li>defualtConfig闭包为项目更多的细节配置</li>
-<li>buildTypes闭包为生成安装文件的相关配置</li>
-</ul>
-</li>
-<li><p>dependencies闭包指定但概念项目的所有依赖关系</p>
-<p>一般分为三种依赖方式</p>
-<ul>
-<li><p>本地依赖：对本地的jar包或目录添加依赖关系</p>
-<p><code>implementation fileTree(dir: &quot;libs&quot;, include: [&quot;*.jar&quot;])</code></p>
-</li>
-<li><p>库依赖：对项目中的库模块添加依赖关系</p>
-</li>
-<li><p>远程依赖：对jcenter库上的开源项目添加依赖关系</p>
-<p><code>implementation &#39;androidx.appcompat:appcompat:1.1.0&#39;</code></p>
-</li>
-<li><p>这里还有一些是测试用例库的</p>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="日志工具Log"><a href="#日志工具Log" class="headerlink" title="日志工具Log"></a>日志工具Log</h2><h3 id="Log"><a href="#Log" class="headerlink" title="Log"></a>Log</h3><p>日志工具类是Log(android.util.Log)，主要5个方法（级别由低到高）：</p>
-<ul>
-<li>Log.v()，级别为verbose，打印最为琐碎、意义最小的日志信息。</li>
-<li>Log.d()，级别为debug，打印调试信息。</li>
-<li>Log.i()，级别为info，打印比较重要的数据，可以帮助分析用户行为。</li>
-<li>Log.w()，级别为warn，打印警告信息，提示程序的潜在风险。</li>
-<li>Log.e()，级别为error，打印程序中的错误信息。</li>
-</ul>
-<p><em>快捷输入：输入logd，按Tab键，则自动补全打印语句。同理，logw,logi等</em></p>
-<p>另外：onCreate()方法外面输入logt，按Tab键，会以当前类名作为值自动生成一个Tag常量。</p>
-<h3 id="Logcat"><a href="#Logcat" class="headerlink" title="Logcat"></a>Logcat</h3><p>日志过滤器，在anroid studio下方的工具栏中，点击进入logcat窗口。</p>
-<p>可以自定义过滤器，例如自定义过滤器名为“data”，则对名为“data”的tag进行过滤，点击该过滤器，则日志智慧显示tag为data的日志。</p>
-<p>日志级别控制：对应日志的5个级别，可以控制日志打印的最低级别。</p>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>回顾第一章的内容，主要包括：</p>
-<ul>
-<li><p>了解android系统的基本架构，包括：Linux内核层、系统运行库层、应用框架层、应用层</p>
-</li>
-<li><p>熟悉基本的anroid项目目录结构</p>
-</li>
-<li><p>了解项目的启动、运行过程</p>
-</li>
-<li><p>了解项目的资源存放与引用（res文件夹下的四类资源文件：drawable、mipmap、values、layout）</p>
-</li>
-<li><p>了解项目的基本配置（两个build.gradle文件）</p>
-</li>
-<li><p>掌握日志Log和相关工具的使用，了解日志5个等级：verbose、debug、info、warn和error</p>
-</li>
-</ul>
-<p>至此，第一章学习完毕。</p>
-
+        <p>《第一行代码》android入门，第一章学习笔记。</p>
+<p>android：移动操作系统</p>
+        
       
 
       
@@ -808,6 +673,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">android</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
